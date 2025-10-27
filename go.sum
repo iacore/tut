@@ -1,3 +1,5 @@
+github.com/Arceliar/phony v0.0.0-20220903101357-530938a4b13d h1:UK9fsWbWqwIQkMCz1CP+v5pGbsGoWAw6g4AyvMpm1EM=
+github.com/Arceliar/phony v0.0.0-20220903101357-530938a4b13d/go.mod h1:BCnxhRf47C/dy/e/D2pmB8NkB3dQVIrkD98b220rx5Q=
 github.com/RasmusLindroth/go-mastodon v0.0.21 h1:ETr7xxrjQKbGvPlcI9hW7Or/pH2gLTZ6R/IBkQ1vwws=
 github.com/RasmusLindroth/go-mastodon v0.0.21/go.mod h1:Lr6n8V1U2b+9P89YZKsICkNc+oNeJXkygY7raei9SXE=
 github.com/adrg/xdg v0.4.0 h1:RzRqFcjH4nE5C6oTAxhBtoE2IRyjBSa62SCbyPidvls=

@@ -8,6 +8,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/Arceliar/phony"
 	"github.com/RasmusLindroth/go-mastodon"
 	"github.com/RasmusLindroth/tut/api"
 	"github.com/RasmusLindroth/tut/auth"
@@ -52,6 +53,8 @@ func SetVars(config *config.Config, app *tview.Application, accounts *auth.Accou
 }
 
 type TutView struct {
+	phony.Inbox
+
 	tut           *Tut
 	Timeline      *Timeline
 	PageFocus     PageFocusAt
@@ -176,7 +179,7 @@ func (tvh *TutViewsHolder) SetFocusedTutView(index int) {
 		App.SetMouseCapture(curr.MouseInput)
 	}
 	if curr.MainView != nil {
-		curr.MainView.ForceUpdate()
+		curr.MainView.be_ForceUpdate(curr)
 	}
 }
 
@@ -245,11 +248,10 @@ func (tv *TutView) loggedIn(acc auth.Account) {
 	}
 	tv.tut.Client = ac
 
-	update := make(chan bool, 1)
 	tv.SubFocus = ListFocus
 	tv.LinkView = NewLinkView(tv)
-	tv.Timeline = NewTimeline(tv, update)
-	tv.MainView = NewMainView(tv, update)
+	tv.Timeline = NewTimeline(tv)
+	tv.MainView = NewMainView(tv)
 	tv.ComposeView = NewComposeView(tv)
 	tv.VoteView = NewVoteView(tv)
 	tv.PollView = NewPollView(tv)
@@ -293,7 +295,7 @@ func (tv *TutView) FocusFeed(index int, ct *config.Timeline) {
 		}
 	}
 	tv.Shared.Top.SetText(tv.Timeline.GetTitle())
-	tv.Timeline.update <- true
+	tv.MainView.be_ForceUpdate(tv)
 }
 
 func (tv *TutView) NextFeed() {

@@ -3,35 +3,35 @@ package ui
 import (
 	"fmt"
 
+	"github.com/Arceliar/phony"
 	"github.com/RasmusLindroth/tut/config"
 	"github.com/rivo/tview"
 )
 
 type MainView struct {
+	phony.Inbox
+	tv *TutView
 	View    *tview.Flex
 	accView *tview.Flex
-	update  chan bool
 }
 
-func NewMainView(tv *TutView, update chan bool) *MainView {
+func NewMainView(tv *TutView) *MainView {
 	mv := &MainView{
-		update:  update,
+		tv: tv,
 		accView: NewControlView(tv.tut.Config),
 	}
 	mv.View = mv.mainViewUI(tv)
-	go func() {
-		for range mv.update {
-			tv.tut.App.QueueUpdateDraw(func() {
-				*tv.MainView.View = *mv.mainViewUI(tv)
-				tv.ShouldSync()
-			})
-		}
-	}()
 	return mv
 }
 
-func (mv *MainView) ForceUpdate() {
-	mv.update <- true
+func (mv *MainView) be_ForceUpdate(from phony.Actor) {
+	mv.Act(from, func() {
+		tv := mv.tv
+		tv.tut.App.QueueUpdateDraw(func() {
+			tv.MainView.View = mv.mainViewUI(tv)
+			tv.ShouldSync()
+		})
+	})
 }
 
 func feedList(mv *TutView, fh *FeedHolder) *tview.Flex {

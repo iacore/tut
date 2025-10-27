@@ -16,7 +16,6 @@ type Timeline struct {
 	tutView        *TutView
 	Feeds          []*FeedHolder
 	FeedFocusIndex int
-	update         chan bool
 	scrollSleep    *scrollSleep
 }
 
@@ -68,11 +67,10 @@ func CreateFeed(tv *TutView, f *config.Timeline) *Feed {
 	return nf
 }
 
-func NewTimeline(tv *TutView, update chan bool) *Timeline {
+func NewTimeline(tv *TutView) *Timeline {
 	tl := &Timeline{
 		tutView: tv,
 		Feeds:   []*FeedHolder{},
-		update:  update,
 	}
 	tl.scrollSleep = NewScrollSleep(tl.NextItemFeed, tl.PrevItemFeed)
 	for _, f := range tv.tut.Config.General.Timelines {
@@ -163,7 +161,7 @@ func (tl *Timeline) AddFeed(f *Feed, newPane bool) {
 		fh.FeedIndex = fh.FeedIndex + 1
 	}
 	tl.tutView.Shared.Top.SetText(tl.GetTitle())
-	tl.update <- true
+	tl.tutView.MainView.be_ForceUpdate(tl.tutView)
 }
 
 func (tl *Timeline) RemoveCurrent(quit bool) bool {
@@ -184,7 +182,7 @@ func (tl *Timeline) RemoveCurrent(quit bool) bool {
 	}
 	f.FeedIndex = ni
 	tl.tutView.Shared.Top.SetText(tl.GetTitle())
-	tl.update <- true
+	tl.tutView.MainView.be_ForceUpdate(tl.tutView)
 	return false
 }
 
@@ -259,7 +257,7 @@ func (tl *Timeline) NextFeed() {
 	}
 	f.FeedIndex = ni
 	tl.tutView.Shared.Top.SetText(tl.GetTitle())
-	tl.update <- true
+	tl.tutView.MainView.be_ForceUpdate(tl.tutView)
 }
 
 func (tl *Timeline) PrevFeed() {
@@ -270,7 +268,7 @@ func (tl *Timeline) PrevFeed() {
 	}
 	f.FeedIndex = ni
 	tl.tutView.Shared.Top.SetText(tl.GetTitle())
-	tl.update <- true
+	tl.tutView.MainView.be_ForceUpdate(tl.tutView)
 }
 
 func (tl *Timeline) FindAndGoTo(ft config.FeedType, data string, hideBoosts, hideReplies bool) bool {
@@ -283,7 +281,7 @@ func (tl *Timeline) FindAndGoTo(ft config.FeedType, data string, hideBoosts, hid
 				tl.tutView.FocusFeed(i, nil)
 				fh.FeedIndex = j
 				tl.tutView.Shared.Top.SetText(tl.GetTitle())
-				tl.update <- true
+				tl.tutView.MainView.be_ForceUpdate(tl.tutView)
 				return true
 			}
 		}
