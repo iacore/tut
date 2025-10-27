@@ -2,6 +2,8 @@ package api
 
 import (
 	"context"
+	"log"
+	"slices"
 	"sync"
 
 	"github.com/RasmusLindroth/go-mastodon"
@@ -19,19 +21,19 @@ const (
 	TagType
 )
 
-type StreamType uint
+type StreamType string
 
 const (
-	HomeStream StreamType = iota
-	LocalStream
-	FederatedStream
-	DirectStream
-	TagStream
-	ListStream
+	HomeStream      StreamType = "Home"
+	LocalStream     StreamType = "Local"
+	FederatedStream StreamType = "Federated"
+	DirectStream    StreamType = "Direct"
+	TagStream       StreamType = "Tag"
+	ListStream      StreamType = "List"
 )
 
 type StreamID struct {
-	Type   StreamType
+	Type StreamType
 	Data string
 }
 
@@ -39,7 +41,10 @@ func MakeStreamID(st StreamType, data string) StreamID {
 	return StreamID{st, data}
 }
 
-type Receiver func(mastodon.Event) // always use *Receiver, because == comparison need it
+type Receiver struct {
+	StreamID StreamID
+	OnEvent  func(mastodon.Event) // always use *Receiver, because == comparison need it
+}
 
 type Stream struct {
 	id        StreamID
@@ -54,21 +59,25 @@ func (s *Stream) ID() StreamID {
 }
 
 func (s *Stream) AddReceiver(r *Receiver) {
+	if r.StreamID != s.id {
+		log.Fatalf("StreamID mismatch: %v != %v", r.StreamID, s.id)
+	}
+
 	s.receivers = append(s.receivers, r)
 }
 
 func (s *Stream) RemoveReceiver(r *Receiver) {
-	index := -1
+	if r.StreamID != s.id {
+		log.Fatalf("StreamID mismatch: %v != %v", r.StreamID, s.id)
+	}
+
 	for i, rec := range s.receivers {
 		if rec == r {
-			index = i
-			break
+			s.receivers = slices.Delete(s.receivers, i, i+1)
+			return
 		}
 	}
-	if index == -1 {
-		return
-	}
-	s.receivers = append(s.receivers[:index], s.receivers[index+1:]...)
+	// not removed, do nothing
 }
 
 func (s *Stream) listen(ctx context.Context) {
@@ -80,7 +89,7 @@ func (s *Stream) listen(ctx context.Context) {
 			switch e.(type) {
 			case *mastodon.UpdateEvent, *mastodon.ConversationEvent, *mastodon.NotificationEvent, *mastodon.DeleteEvent, *mastodon.ErrorEvent:
 				for _, r := range s.receivers {
-					(*r)(e)
+					r.OnEvent(e)
 				}
 			}
 		}
@@ -98,9 +107,7 @@ func newStream(ctx context.Context, id StreamID, input chan mastodon.Event) *Str
 	return stream
 }
 
-func (ac *AccountClient) CreateOrGetStream(ctx context.Context, st StreamType, data string) (stream *Stream, err error) {
-	id := MakeStreamID(st, data)
-
+func (ac *AccountClient) openOrCreateStream(ctx context.Context, id StreamID) (stream *Stream, err error) {
 	// get stream
 	for _, s := range ac.Streams {
 		if s.ID() == id {
@@ -109,7 +116,7 @@ func (ac *AccountClient) CreateOrGetStream(ctx context.Context, st StreamType, d
 	}
 
 	// create stream
-	ch, err := ac.StreamIDtoWebSocketStream(ctx, id)
+	ch, err := ac.streamIDtoWebSocketStream(ctx, id)
 	if err != nil {
 		return nil, err
 	}
@@ -119,7 +126,7 @@ func (ac *AccountClient) CreateOrGetStream(ctx context.Context, st StreamType, d
 }
 
 // create mastodon.Event stream channel
-func (ac *AccountClient) StreamIDtoWebSocketStream(ctx context.Context, id StreamID) (chan mastodon.Event, error) {
+func (ac *AccountClient) streamIDtoWebSocketStream(ctx context.Context, id StreamID) (chan mastodon.Event, error) {
 	switch id.Type {
 	case HomeStream:
 		return ac.WSClient.StreamingWSUser(ctx)
@@ -138,14 +145,23 @@ func (ac *AccountClient) StreamIDtoWebSocketStream(ctx context.Context, id Strea
 	}
 }
 
-func (ac *AccountClient) RemoveReceiver(rec *Receiver, st StreamType, data string) {
-	id := MakeStreamID(st, data)
+func (ac *AccountClient) AddReceiver(r *Receiver) error {
+	stream, err := ac.openOrCreateStream(context.Background(), r.StreamID)
+	if err != nil {
+		return err
+	}
+	stream.AddReceiver(r)
+	return nil
+}
+
+func (ac *AccountClient) RemoveReceiver(r *Receiver) {
+	id := r.StreamID
 	stream, ok := ac.Streams[id]
 	if !ok {
 		return
 	}
 	stream.mux.Lock()
-	stream.RemoveReceiver(rec)
+	stream.RemoveReceiver(r)
 	if len(stream.receivers) == 0 {
 		stream.cancel()
 		delete(ac.Streams, id)

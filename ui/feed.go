@@ -10,7 +10,7 @@ import (
 	"github.com/RasmusLindroth/tut/feed"
 	"github.com/RasmusLindroth/tut/util"
 	"github.com/gdamore/tcell/v2"
-	"github.com/gen2brain/beeep"
+	
 	"github.com/rivo/tview"
 )
 
@@ -89,36 +89,7 @@ func (f *Feed) DrawContent() {
 
 func (f *Feed) update() {
 	for nft := range f.Data.Update {
-		switch nft.Type {
-		case feed.DesktopNotificationFollower:
-			if f.tutView.tut.Config.NotificationConfig.NotificationFollower {
-				beeep.Notify(fmt.Sprintf("%s follows you", nft.Data), "", "")
-			}
-		case feed.DesktopNotificationFavorite:
-			if f.tutView.tut.Config.NotificationConfig.NotificationFavorite {
-				beeep.Notify(fmt.Sprintf("%s favorited your toot", nft.Data), "", "")
-			}
-		case feed.DesktopNotificationMention:
-			if f.tutView.tut.Config.NotificationConfig.NotificationMention {
-				beeep.Notify(fmt.Sprintf("%s mentioned you", nft.Data), "", "")
-			}
-		case feed.DesktopNotificationUpdate:
-			if f.tutView.tut.Config.NotificationConfig.NotificationUpdate {
-				beeep.Notify(fmt.Sprintf("%s changed their toot", nft.Data), "", "")
-			}
-		case feed.DesktopNotificationBoost:
-			if f.tutView.tut.Config.NotificationConfig.NotificationBoost {
-				beeep.Notify(fmt.Sprintf("%s boosted your toot", nft.Data), "", "")
-			}
-		case feed.DesktopNotificationPoll:
-			if f.tutView.tut.Config.NotificationConfig.NotificationPoll {
-				beeep.Notify("Poll has ended", "", "")
-			}
-		case feed.DesktopNotificationPost:
-			if f.tutView.tut.Config.NotificationConfig.NotificationPost {
-				beeep.Notify("New post", "", "")
-			}
-		}
+		feed.SendDesktopNotification(f.tutView.tut.Config.NotificationConfig, nft)
 		f.tutView.tut.App.QueueUpdateDraw(func() {
 			lLen := f.List.GetItemCount()
 			curr := f.List.GetCurrentID()
