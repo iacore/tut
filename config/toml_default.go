@@ -130,315 +130,315 @@ var ConfigDefault = ConfigTOML{
 		Posts:     bf,
 	},
 	Input: InputTOML{
-		GlobalDown: &KeyHintTOML{
+		GlobalDown: &InputActionTOML{
 			Keys:        &[]string{"j", "J"},
 			SpecialKeys: &[]string{"Down"},
 		},
-		GlobalUp: &KeyHintTOML{
+		GlobalUp: &InputActionTOML{
 			Keys:        &[]string{"k", "K"},
 			SpecialKeys: &[]string{"Up"},
 		},
-		GlobalEnter: &KeyHintTOML{
+		GlobalEnter: &InputActionTOML{
 			SpecialKeys: &[]string{"Enter"},
 		},
-		GlobalBack: &KeyHintTOML{
+		GlobalBack: &InputActionTOML{
 			Hint:        sp("[Esc]"),
 			SpecialKeys: &[]string{"Esc"},
 		},
-		GlobalExit: &KeyHintTOML{
+		GlobalExit: &InputActionTOML{
 			Hint: sp("[Q]uit"),
 			Keys: &[]string{"q", "Q"},
 		},
-		MainHome: &KeyHintTOML{
+		MainHome: &InputActionTOML{
 			Hint:        sp(""),
 			Keys:        &[]string{"g"},
 			SpecialKeys: &[]string{"Home"},
 		},
-		MainEnd: &KeyHintTOML{
+		MainEnd: &InputActionTOML{
 			Hint:        sp(""),
 			Keys:        &[]string{"G"},
 			SpecialKeys: &[]string{"End"},
 		},
-		MainPrevFeed: &KeyHintTOML{
+		MainPrevFeed: &InputActionTOML{
 			Hint:        sp(""),
 			Keys:        &[]string{"h", "H"},
 			SpecialKeys: &[]string{"Left"},
 		},
-		MainNextFeed: &KeyHintTOML{
+		MainNextFeed: &InputActionTOML{
 			Hint:        sp(""),
 			Keys:        &[]string{"l", "L"},
 			SpecialKeys: &[]string{"Right"},
 		},
-		MainPrevPane: &KeyHintTOML{
+		MainPrevPane: &InputActionTOML{
 			Hint:        sp(""),
 			SpecialKeys: &[]string{"Backtab"},
 		},
-		MainNextPane: &KeyHintTOML{
+		MainNextPane: &InputActionTOML{
 			Hint:        sp(""),
 			SpecialKeys: &[]string{"Tab"},
 		},
-		MainCompose: &KeyHintTOML{
+		MainCompose: &InputActionTOML{
 			Hint: sp(""),
 			Keys: &[]string{"c", "C"},
 		},
-		MainNextAccount: &KeyHintTOML{
+		MainNextAccount: &InputActionTOML{
 			Hint:        sp(""),
 			SpecialKeys: &[]string{"Ctrl-N"},
 		},
-		MainPrevAccount: &KeyHintTOML{
+		MainPrevAccount: &InputActionTOML{
 			Hint:        sp(""),
 			SpecialKeys: &[]string{"Ctrl-P"},
 		},
-		StatusAvatar: &KeyHintTOML{
+		StatusAvatar: &InputActionTOML{
 			Hint: sp("[A]vatar"),
 			Keys: &[]string{"a", "A"},
 		},
-		StatusBoost: &KeyHintTOML{
+		StatusBoost: &InputActionTOML{
 			Hint:    sp("[B]oost"),
 			HintAlt: sp("Un[B]oost"),
 			Keys:    &[]string{"b", "B"},
 		},
-		StatusEdit: &KeyHintTOML{
+		StatusEdit: &InputActionTOML{
 			Hint: sp("[E]dit"),
 			Keys: &[]string{"e", "E"},
 		},
-		StatusDelete: &KeyHintTOML{
+		StatusDelete: &InputActionTOML{
 			Hint: sp("[D]elete"),
 			Keys: &[]string{"d", "D"},
 		},
-		StatusFavorite: &KeyHintTOML{
+		StatusFavorite: &InputActionTOML{
 			Hint:    sp("[F]avorite"),
 			HintAlt: sp("Un[F]avorite"),
 			Keys:    &[]string{"f", "F"},
 		},
-		StatusMedia: &KeyHintTOML{
+		StatusMedia: &InputActionTOML{
 			Hint: sp("[M]edia"),
 			Keys: &[]string{"m", "M"},
 		},
-		StatusLinks: &KeyHintTOML{
+		StatusLinks: &InputActionTOML{
 			Hint: sp("[O]pen"),
 			Keys: &[]string{"o", "O"},
 		},
-		StatusPoll: &KeyHintTOML{
+		StatusPoll: &InputActionTOML{
 			Hint: sp("[P]oll"),
 			Keys: &[]string{"p", "P"},
 		},
-		StatusReply: &KeyHintTOML{
+		StatusReply: &InputActionTOML{
 			Hint: sp("[R]eply"),
 			Keys: &[]string{"r", "R"},
 		},
-		StatusBookmark: &KeyHintTOML{
+		StatusBookmark: &InputActionTOML{
 			Hint:    sp("[S]ave"),
 			HintAlt: sp("Un[S]ave"),
 			Keys:    &[]string{"s", "S"},
 		},
-		StatusThread: &KeyHintTOML{
+		StatusThread: &InputActionTOML{
 			Hint: sp("[T]hread"),
 			Keys: &[]string{"t", "T"},
 		},
-		StatusUser: &KeyHintTOML{
+		StatusUser: &InputActionTOML{
 			Hint: sp("[U]ser"),
 			Keys: &[]string{"u", "U"},
 		},
-		StatusViewFocus: &KeyHintTOML{
+		StatusViewFocus: &InputActionTOML{
 			Hint: sp("[V]iew"),
 			Keys: &[]string{"v", "V"},
 		},
-		StatusYank: &KeyHintTOML{
+		StatusYank: &InputActionTOML{
 			Hint: sp("[Y]ank"),
 			Keys: &[]string{"y", "Y"},
 		},
-		StatusToggleCW: &KeyHintTOML{
+		StatusToggleCW: &InputActionTOML{
 			Hint: sp("Press [Z] to toggle cw"),
 			Keys: &[]string{"z", "Z"},
 		},
-		StatusShowFiltered: &KeyHintTOML{
+		StatusShowFiltered: &InputActionTOML{
 			Hint: sp("Press [Z] to view filtered toot"),
 			Keys: &[]string{"z", "Z"},
 		},
-		UserAvatar: &KeyHintTOML{
+		UserAvatar: &InputActionTOML{
 			Hint: sp("[A]vatar"),
 			Keys: &[]string{"a", "A"},
 		},
-		UserBlock: &KeyHintTOML{
+		UserBlock: &InputActionTOML{
 			Hint:    sp("[B]lock"),
 			HintAlt: sp("Un[B]lock"),
 			Keys:    &[]string{"b", "B"},
 		},
-		UserFollow: &KeyHintTOML{
+		UserFollow: &InputActionTOML{
 			Hint:    sp("[F]ollow"),
 			HintAlt: sp("Un[F]ollow"),
 			Keys:    &[]string{"f", "F"},
 		},
-		UserFollowRequestDecide: &KeyHintTOML{
+		UserFollowRequestDecide: &InputActionTOML{
 			Hint:    sp("Follow [R]equest"),
 			HintAlt: sp("Follow [R]equest"),
 			Keys:    &[]string{"r", "R"},
 		},
-		UserMute: &KeyHintTOML{
+		UserMute: &InputActionTOML{
 			Hint:    sp("[M]ute"),
 			HintAlt: sp("Un[M]ute"),
 			Keys:    &[]string{"m", "M"},
 		},
-		UserLinks: &KeyHintTOML{
+		UserLinks: &InputActionTOML{
 			Hint: sp("[O]pen"),
 			Keys: &[]string{"o", "O"},
 		},
-		UserUser: &KeyHintTOML{
+		UserUser: &InputActionTOML{
 			Hint: sp("[U]ser"),
 			Keys: &[]string{"u", "U"},
 		},
-		UserViewFocus: &KeyHintTOML{
+		UserViewFocus: &InputActionTOML{
 			Hint: sp("[V]iew"),
 			Keys: &[]string{"v", "V"},
 		},
-		UserYank: &KeyHintTOML{
+		UserYank: &InputActionTOML{
 			Hint: sp("[Y]ank"),
 			Keys: &[]string{"y", "Y"},
 		},
-		ListOpenFeed: &KeyHintTOML{
+		ListOpenFeed: &InputActionTOML{
 			Hint: sp("[O]pen"),
 			Keys: &[]string{"o", "O"},
 		},
-		ListUserList: &KeyHintTOML{
+		ListUserList: &InputActionTOML{
 			Hint: sp("[U]sers"),
 			Keys: &[]string{"u", "U"},
 		},
-		ListUserAdd: &KeyHintTOML{
+		ListUserAdd: &InputActionTOML{
 			Hint: sp("[A]dd"),
 			Keys: &[]string{"a", "A"},
 		},
-		ListUserDelete: &KeyHintTOML{
+		ListUserDelete: &InputActionTOML{
 			Hint: sp("[D]elete"),
 			Keys: &[]string{"d", "D"},
 		},
-		LinkOpen: &KeyHintTOML{
+		LinkOpen: &InputActionTOML{
 			Hint: sp("[O]pen"),
 			Keys: &[]string{"o", "O"},
 		},
-		LinkYank: &KeyHintTOML{
+		LinkYank: &InputActionTOML{
 			Hint: sp("[Y]ank"),
 			Keys: &[]string{"y", "Y"},
 		},
-		TagOpenFeed: &KeyHintTOML{
+		TagOpenFeed: &InputActionTOML{
 			Hint: sp("[O]pen"),
 			Keys: &[]string{"o", "O"},
 		},
-		TagFollow: &KeyHintTOML{
+		TagFollow: &InputActionTOML{
 			Hint:    sp("[F]ollow"),
 			HintAlt: sp("Un[F]ollow"),
 			Keys:    &[]string{"f", "F"},
 		},
-		ComposeEditCW: &KeyHintTOML{
+		ComposeEditCW: &InputActionTOML{
 			Hint: sp("[C]W text"),
 			Keys: &[]string{"c", "C"},
 		},
-		ComposeEditText: &KeyHintTOML{
+		ComposeEditText: &InputActionTOML{
 			Hint: sp("[E]dit text"),
 			Keys: &[]string{"e", "E"},
 		},
-		ComposeIncludeQuote: &KeyHintTOML{
+		ComposeIncludeQuote: &InputActionTOML{
 			Hint: sp("[I]nclude quote"),
 			Keys: &[]string{"i", "I"},
 		},
-		ComposeMediaFocus: &KeyHintTOML{
+		ComposeMediaFocus: &InputActionTOML{
 			Hint: sp("[M]edia"),
 			Keys: &[]string{"m", "M"},
 		},
-		ComposePost: &KeyHintTOML{
+		ComposePost: &InputActionTOML{
 			Hint: sp("[P]ost"),
 			Keys: &[]string{"p", "P"},
 		},
-		ComposeToggleContentWarning: &KeyHintTOML{
+		ComposeToggleContentWarning: &InputActionTOML{
 			Hint: sp("[T]oggle CW"),
 			Keys: &[]string{"t", "T"},
 		},
-		ComposeVisibility: &KeyHintTOML{
+		ComposeVisibility: &InputActionTOML{
 			Hint: sp("[V]isibility"),
 			Keys: &[]string{"v", "V"},
 		},
-		ComposeLanguage: &KeyHintTOML{
+		ComposeLanguage: &InputActionTOML{
 			Hint: sp("[L]ang"),
 			Keys: &[]string{"l", "L"},
 		},
-		ComposePoll: &KeyHintTOML{
+		ComposePoll: &InputActionTOML{
 			Hint: sp("P[O]ll"),
 			Keys: &[]string{"o", "O"},
 		},
-		MediaDelete: &KeyHintTOML{
+		MediaDelete: &InputActionTOML{
 			Hint: sp("[D]elete"),
 			Keys: &[]string{"d", "D"},
 		},
-		MediaEditDesc: &KeyHintTOML{
+		MediaEditDesc: &InputActionTOML{
 			Hint: sp("[E]dit desc"),
 			Keys: &[]string{"e", "E"},
 		},
-		MediaAdd: &KeyHintTOML{
+		MediaAdd: &InputActionTOML{
 			Hint: sp("[A]dd"),
 			Keys: &[]string{"a", "A"},
 		},
-		VoteVote: &KeyHintTOML{
+		VoteVote: &InputActionTOML{
 			Hint: sp("[V]ote"),
 			Keys: &[]string{"v", "V"},
 		},
-		VoteSelect: &KeyHintTOML{
+		VoteSelect: &InputActionTOML{
 			Hint:        sp("[Enter] to select"),
 			Keys:        &[]string{" "},
 			SpecialKeys: &[]string{"Enter"},
 		},
-		PollAdd: &KeyHintTOML{
+		PollAdd: &InputActionTOML{
 			Hint: sp("[A]dd"),
 			Keys: &[]string{"a", "A"},
 		},
-		PollEdit: &KeyHintTOML{
+		PollEdit: &InputActionTOML{
 			Hint: sp("[E]dit"),
 			Keys: &[]string{"e", "E"},
 		},
-		PollDelete: &KeyHintTOML{
+		PollDelete: &InputActionTOML{
 			Hint: sp("[D]elete"),
 			Keys: &[]string{"d", "D"},
 		},
-		PollMultiToggle: &KeyHintTOML{
+		PollMultiToggle: &InputActionTOML{
 			Hint: sp("Toggle [M]ultiple"),
 			Keys: &[]string{"m", "M"},
 		},
-		PollExpiration: &KeyHintTOML{
+		PollExpiration: &InputActionTOML{
 			Hint: sp("E[X]pires"),
 			Keys: &[]string{"x", "X"},
 		},
-		PreferenceName: &KeyHintTOML{
+		PreferenceName: &InputActionTOML{
 			Hint: sp("[N]ame"),
 			Keys: &[]string{"n", "N"},
 		},
-		PreferenceVisibility: &KeyHintTOML{
+		PreferenceVisibility: &InputActionTOML{
 			Hint: sp("[V]isibility"),
 			Keys: &[]string{"v", "V"},
 		},
-		PreferenceBio: &KeyHintTOML{
+		PreferenceBio: &InputActionTOML{
 			Hint: sp("[B]io"),
 			Keys: &[]string{"b", "B"},
 		},
-		PreferenceSave: &KeyHintTOML{
+		PreferenceSave: &InputActionTOML{
 			Hint: sp("[S]ave"),
 			Keys: &[]string{"s", "S"},
 		},
-		PreferenceFields: &KeyHintTOML{
+		PreferenceFields: &InputActionTOML{
 			Hint: sp("[F]ields"),
 			Keys: &[]string{"f", "F"},
 		},
-		PreferenceFieldsAdd: &KeyHintTOML{
+		PreferenceFieldsAdd: &InputActionTOML{
 			Hint: sp("[A]dd"),
 			Keys: &[]string{"a", "A"},
 		},
-		PreferenceFieldsEdit: &KeyHintTOML{
+		PreferenceFieldsEdit: &InputActionTOML{
 			Hint: sp("[E]dit"),
 			Keys: &[]string{"e", "E"},
 		},
-		PreferenceFieldsDelete: &KeyHintTOML{
+		PreferenceFieldsDelete: &InputActionTOML{
 			Hint: sp("[D]elete"),
 			Keys: &[]string{"d", "D"},
 		},
-		EditorExit: &KeyHintTOML{
+		EditorExit: &InputActionTOML{
 			Hint:        sp("[Esc] when done"),
 			SpecialKeys: &[]string{"Esc"},
 		},

@@ -1,29 +1,22 @@
-package config
-
-var conftext = `# Configuration file for tut
+# Configuration file for tut
 
 [general]
 # What editor to use. TUT_USE_INTERNAL will use the editor that comes with tut.
 # If you want you can set this to $EDITOR to use your environment variable or
 # vim if you want to specify the program directly.
-# default="TUT_USE_INTERNAL"
 editor="TUT_USE_INTERNAL"
 
 # You need to press yes in a confirmation dialog before favoriting, boosting,
 # etc.
-# default=true
 confirmation=true
 
 # Enable mouse support in tut.
-# default=false
 mouse-support=false
 
 # The date format to be used. See https://pkg.go.dev/time#pkg-constants
-# default="2006-01-02 15:04"
 date-format="2006-01-02 15:04"
 
 # Format for dates the same day. See date-format for more info.
-# default="15:04"
 date-tody-format="15:04"
 
 # This displays relative dates instead for statuses that are one day or older
@@ -36,73 +29,57 @@ date-tody-format="15:04"
 # 				
 # Value: 28 will display a relative date for toots that are between 1-28 days
 # old. Otherwise it will use the short or long format.
-# default=-1
 date-relative=-1
 
 # The max with of text before it wraps when displaying a toot.
-# default=0
 max-width=0
 
 # The placement of your panes.
 # valid: left, right, top, bottom
-# default="left"
 list-placement="left"
 
 # How should panes be split?
 # valid: row, column
-# default="row"
 list-split="row"
 
 # The proportion of panes vs. content. 1 on this and 3 on content below results
 # in content taking up 3 times more space.
-# default=1
 list-proportion=1
 
 # See previous.
-# default=2
 content-proportion=2
 
 # Hide notifications of this type in your notification timelines.
 # valid: mention, status, boost, follow, follow_request, favorite, poll, edit
-# default=[]
 notifications-to-hide=[]
 
 # Always include a quote of the message you're replying to.
-# default=false
 quote-reply=false
 
 # If you want to show icons in timelines.
-# default=true
 show-icons=true
 
 # If you only want to you the letter of keys instead of the full hint.
-# default=false
 short-hints=false
 
 # If you want to display the filter that filtered a toot.
-# default=true
 show-filter-phrase=true
 
 # Display a message in the commandbar on how to access the help text.
-# default=true
 show-help=true
 
 # Always jump to the newest post. May ruin your reading experience.
-# default=false
 stick-to-top=false
 
 # Display the username of the person being boosted instead of the person that
 # boosted.
-# default=false
 show-boosted-user=false
 
 # Open a new pane when you run a command like :timeline home.
-# default=true
 commands-in-new-pane=true
 
 # Set a default name for the timeline if the name is empty. So if you run :tag
 # linux the title of the pane will be set to #linux
-# default=true
 dynamic-timeline-name=true
 
 # 0 = No terminal title
@@ -110,25 +87,21 @@ dynamic-timeline-name=true
 # 2 = Only show terminal title, and no top bar in tut
 # 3 = No terminal title and no top bar in tut.
 # valid: 0, 1, 2, 3
-# default=0
 terminal-title=0
 
 # If you don't want the whole UI to update, and only update the text content you
 # can disable this. This will lead to some artifacts being left on the screen
 # when emojis are present.
-# default=true
 redraw-ui=true
 
 # The leader is used as a shortcut to run commands as you can do in Vim. By
 # default this is disabled and you enable it by setting a key here. It can only
 # consist of one char, so set it to something like a comma.
-# default=""
 leader-key=""
 
 # Number of milliseconds before the leader command resets. So if you tap the
 # leader-key by mistake or are to slow it empties all the input after X
 # milliseconds.
-# default=1000
 leader-timeout=1000
 
 # [[general.timelines]]
@@ -152,57 +125,46 @@ leader-timeout=1000
 # --- END OF EXAMPLE ---
 
 # The name to display above the timeline
-# default=""
 # name=""
 
 # The type of the timeline
 # valid: home, direct, local, federated, bookmarks, saved, favorited, notifications,
 # lists, mentions, tag
-# default=""
 # type=""
 
 # Used for the tag type, so here you set the tag. If you have multiple you
 # separate them with a space.
-# default=""
 # data=""
 
 # A list of keys to give this timeline focus. See under the input section to
 # learn more about keys.
-# default=[]
 # keys=[]
 
 # A list of special-keys to give this timeline focus. See under the input
 # section to learn more about special-keys.
-# default=[]
 # special-keys=[]
 
 # A shortcut to give this timeline focus with your leader-key + this shortcut.
-# default=""
 # shortcut=""
 
 # Hide boosts in this timeline.
-# default="false"
 # hide-boosts="false"
 
 # Hide replies in this timeline.
-# default="false"
 # hide-replies="false"
 
 # Don't open this timeline when you start tut. Use your keys or shortcut to open
 # it.
-# default="false"
 # closed="false"
 
 # Don't open this timeline when you start tut. Use your keys or shortcut to open
 # it.
 # valid: new-pane, current-pane
-# default="new-pane"
 # on-creation-closed="new-pane"
 
 # Don't open this timeline when you start tut. Use your keys or shortcut to open
 # it.
 # valid: focus-pane, focus-self
-# default="focus-pane"
 # on-focus="focus-pane"
 
 # [[general.leader-actions]]
@@ -244,140 +206,111 @@ leader-timeout=1000
 # move-pane-left, move-pane-right, move-pane-up, move-pane-down, move-pane-home,
 # move-pane-end, muting, newer, pane, preferences, profile, proportions,
 # refetch, stick-to-top, tags
-# default=""
 # type=""
 
 # Data to pass to the action.
-# default=""
 # data=""
 
 # A shortcut to run this action with your leader-key + this shortcut.
-# default=""
 # shortcut=""
 
 [media]
 # Media files will be removed directly after they've been opened. Some programs
 # doesn't like this, so if your media doesn't open, try set this to false. Tut
 # will remove all files once you close the program.
-# default=true
 delete-temp-files=true
 
 [media.image]
 # The program to open images. TUT_OS_DEFAULT equals xdg-open on Linux, open on
 # MacOS and start on Windows.
-# default="TUT_OS_DEFAULT"
 program="TUT_OS_DEFAULT"
 
 # Arguments to pass to the program.
-# default=""
 args=""
 
 # If the program runs in the terminal set this to true.
-# default=false
 terminal=false
 
 # If the program should be called multiple times when there is multiple files.
 # If set to false all files will be passed as an argument, but not all programs
 # support this.
-# default=true
 single=true
 
 # If the files should be passed in reverse order. This will make some programs
 # display the files in the correct order.
-# default=false
 reverse=false
 
 [media.video]
 # The program to open videos. TUT_OS_DEFAULT equals xdg-open on Linux, open on
 # MacOS and start on Windows.
-# default="TUT_OS_DEFAULT"
 program="TUT_OS_DEFAULT"
 
 # Arguments to pass to the program.
-# default=""
 args=""
 
 # If the program runs in the terminal set this to true.
-# default=false
 terminal=false
 
 # If the program should be called multiple times when there is multiple files.
 # If set to false all files will be passed as an argument, but not all programs
 # support this.
-# default=true
 single=true
 
 # If the files should be passed in reverse order. This will make some programs
 # display the files in the correct order.
-# default=false
 reverse=false
 
 [media.audio]
 # The program to open audio. TUT_OS_DEFAULT equals xdg-open on Linux, open on
 # MacOS and start on Windows.
-# default="TUT_OS_DEFAULT"
 program="TUT_OS_DEFAULT"
 
 # Arguments to pass to the program.
-# default=""
 args=""
 
 # If the program runs in the terminal set this to true.
-# default=false
 terminal=false
 
 # If the program should be called multiple times when there is multiple files.
 # If set to false all files will be passed as an argument, but not all programs
 # support this.
-# default=true
 single=true
 
 # If the files should be passed in reverse order. This will make some programs
 # display the files in the correct order.
-# default=false
 reverse=false
 
 [media.link]
 # The program to open links. TUT_OS_DEFAULT equals xdg-open on Linux, open on
 # MacOS and start on Windows.
-# default="TUT_OS_DEFAULT"
 program="TUT_OS_DEFAULT"
 
 # Arguments to pass to the program.
-# default=""
 args=""
 
 # If the program runs in the terminal set this to true.
-# default=false
 terminal=false
 
 [desktop-notification]
 # Enable notifications when someone follows you.
-# default=false
 followers=false
 
 # Enable notifications when one of your toots gets favorited.
-# default=false
 favorite=false
 
 # Enable notifications  when someone mentions you.
-# default=false
 mention=false
 
 # Enable notifications when a post you have interacted with gets edited.
-# default=false
 update=false
 
 # Enable notifications when one of your toots gets boosted.
-# default=false
 boost=false
 
 # Enable notifications when a poll ends.
-# default=false
 poll=false
 
 # Enable notifications for new posts.
-# default=false
 posts=false
 
 [open-custom]
@@ -397,30 +330,24 @@ posts=false
 
 # [[open-custom.programs]]
 # The program to open the file with.
-# default=""
 # program=""
 
 # Arguments to pass to the program.
-# default=""
 # args=""
 
 # If the program runs in the terminal set this to true.
-# default=false
 # terminal=false
 
 # What should the key hint in tut be for this program. See under the input
 # section to learn more about hint.
-# default=""
 # hint=""
 
 # A list of keys to to open files with this program. See under the input section
 # to learn more about keys.
-# default=[]
 # keys=[]
 
 # A list of special-keys to open files with this program. See under the input
 # section to learn more about special-keys.
-# default=[]
 # special-keys=[]
 
 [open-pattern]
@@ -429,19 +356,15 @@ posts=false
 # program you want them to open up in. You could for example open Youtube videos
 # in your video player instead of your default browser. To see the syntax for
 # glob pattern you can follow this URL https://github.com/gobwas/glob#syntax.
-# default=""
 # matching=""
 
 # The program to open the file with.
-# default=""
 # program=""
 
 # Arguments to pass to the program.
-# default=""
 # args=""
 
 # If the program runs in the terminal set this to true.
-# default=false
 # terminal=false
 
 [style]
@@ -466,121 +389,92 @@ posts=false
 # If you want to use your own theme but don't want to create a new file, set
 # theme="none" and then you can create your own theme below.
 # 
-# default="default"
 theme="default"
 
 # The xrdb prefix used for colors in .Xresources.
-# default="guess"
 xrdb-prefix="guess"
 
 # The background color used on most elements.
-# default=""
 background=""
 
 # The text color used on most of the text.
-# default=""
 text=""
 
 # The color to display subtle elements or subtle text. Like lines and help text.
-# default=""
 subtle=""
 
 # The color for errors or warnings
-# default=""
 warning-text=""
 
 # This color is used to display username.
-# default=""
 text-special-one=""
 
 # This color is used to display username and key hints.
-# default=""
 text-special-two=""
 
 # The color of the bar at the top
-# default=""
 top-bar-background=""
 
 # The color of the text in the bar at the top.
-# default=""
 top-bar-text=""
 
 # The color of the bar at the bottom
-# default=""
 status-bar-background=""
 
 # The color of the text in the bar at the bottom.
-# default=""
 status-bar-text=""
 
 # The color of the bar at the bottom in view mode.
-# default=""
 status-bar-view-background=""
 
 # The color of the text in the bar at the bottom in view mode.
-# default=""
 status-bar-view-text=""
 
 # The color of the text in the command bar at the bottom.
-# default=""
 command-text=""
 
 # Background of selected list items.
-# default=""
 list-selected-background=""
 
 # The text color of selected list items.
-# default=""
 list-selected-text=""
 
 # The background color of selected list items that are out of focus.
-# default=""
 list-selected-inactive-background=""
 
 # The text color of selected list items that are out of focus.
-# default=""
 list-selected-inactive-text=""
 
 # The main color of the text for key hints
-# default=""
 controls-text=""
 
 # The highlight color of for key hints
-# default=""
 controls-highlight=""
 
 # The background color in drop-downs and autocompletions
-# default=""
 autocomplete-background=""
 
 # The text color in drop-downs at autocompletions
-# default=""
 autocomplete-text=""
 
 # The background color for selected value in drop-downs and autocompletions
-# default=""
 autocomplete-selected-background=""
 
 # The text color for selected value in drop-downs and autocompletions
-# default=""
 autocomplete-selected-text=""
 
 # The background color on selected button and the text color of unselected
 # buttons
-# default=""
 button-color-one=""
 
 # The text color on selected button and the background color of unselected
 # buttons
-# default=""
 button-color-two=""
 
 # The background on named timelines.
-# default=""
 timeline-name-background=""
 
 # The text color on named timelines
-# default=""
 timeline-name-text=""
 
 [input]
@@ -609,678 +503,78 @@ timeline-name-text=""
 # 
 # https://github.com/gdamore/tcell/blob/master/key.go
 
-[input.global-down]
-# Keys for moving down
-
-# default=["j", "J"]
-keys=["j","J"]
-
-# default=["Down"]
-special-keys=["Down"]
-
-[input.global-up]
-# Keys for moving down
-
-# default=["k", "K"]
-keys=["k","K"]
-
-# default=["Up"]
-special-keys=["Up"]
-
-[input.global-enter]
-# To select items
-
-# default=["Enter"]
-special-keys=["Enter"]
-
-[input.global-back]
-# To go back
-
-# default="[Esc]"
-hint="[Esc]"
-
-# default=["Esc"]
-special-keys=["Esc"]
-
-[input.global-exit]
-# To go back or exit
-
-# default="[Q]uit"
-hint="[Q]uit"
-
-# default=["q", "Q"]
-keys=["q","Q"]
-
-[input.main-home]
-# Move to the top
-
-# default=["g"]
-keys=["g"]
-
-# default=["Home"]
-special-keys=["Home"]
-
-[input.main-end]
-# Move to the bottom
-
-# default=["G"]
-keys=["G"]
-
-# default=["End"]
-special-keys=["End"]
-
-[input.main-prev-feed]
-# Go to previous feed
-
-# default=["h", "H"]
-keys=["h","H"]
-
-# default=["Left"]
-special-keys=["Left"]
-
-[input.main-next-feed]
-# Go to next feed
-
-# default=["l", "L"]
-keys=["l","L"]
-
-# default=["Right"]
-special-keys=["Right"]
-
-[input.main-prev-pane]
-# Focus on the previous feed pane
-
-# default=["Backtab"]
-special-keys=["Backtab"]
-
-[input.main-next-pane]
-# Focus on the next feed pane
-
-# default=["Tab"]
-special-keys=["Tab"]
-
-[input.main-next-account]
-# Focus on the next account
-
-# default=["Ctrl-N"]
-special-keys=["Ctrl-N"]
-
-[input.main-prev-account]
-# Focus on the previous account
-
-# default=["Ctrl-P"]
-special-keys=["Ctrl-P"]
-
-[input.main-compose]
-# Compose a new toot
-
-# default=["c", "C"]
-keys=["c","C"]
-
-[input.status-avatar]
-# Open avatar
-
-# default="[A]vatar"
-hint="[A]vatar"
-
-# default=["a", "A"]
-keys=["a","A"]
-
-[input.status-boost]
-# Boost a toot
-
-# default="[B]oost"
-hint="[B]oost"
-
-# default=["b", "B"]
-keys=["b","B"]
-
-[input.status-edit]
-# Edit a toot
-
-# default="[E]dit"
-hint="[E]dit"
-
-# default=["e", "E"]
-keys=["e","E"]
-
-[input.status-delete]
-# Delete a toot
-
-# default="[D]elete"
-hint="[D]elete"
-
-# default=["d", "D"]
-keys=["d","D"]
-
-[input.status-favorite]
-# Favorite a toot
-
-# default="[F]avorite"
-hint="[F]avorite"
-
-# default=["f", "F"]
-keys=["f","F"]
-
-[input.status-media]
-# Open toots media files
-
-# default="[M]edia"
-hint="[M]edia"
-
-# default=["m", "M"]
-keys=["m","M"]
-
-[input.status-links]
-# Open links
-
-# default="[O]pen"
-hint="[O]pen"
-
-# default=["o", "O"]
-keys=["o","O"]
-
-[input.status-poll]
-# Open poll
-
-# default="[P]oll"
-hint="[P]oll"
-
-# default=["p", "P"]
-keys=["p","P"]
-
-[input.status-reply]
-# Reply to toot
-
-# default="[R]eply"
-hint="[R]eply"
-
-# default=["r", "R"]
-keys=["r","R"]
-
-[input.status-bookmark]
-# Save/bookmark a toot
-
-# default="[S]ave"
-hint="[S]ave"
-
-# default="Un[S]ave"
-hint-alt="Un[S]ave"
-
-# default=["s", "S"]
-keys=["s","S"]
-
-[input.status-thread]
-# View thread
-
-# default="[T]hread"
-hint="[T]hread"
-
-# default=["t", "T"]
-keys=["t","T"]
-
-[input.status-user]
-# Open user profile
-
-# default="[U]ser"
-hint="[U]ser"
-
-# default=["u", "U"]
-keys=["u","U"]
-
-[input.status-view-focus]
-# Open the view mode
-
-# default="[V]iew"
-hint="[V]iew"
-
-# default=["v", "V"]
-keys=["v","V"]
-
-[input.status-yank]
-# Yank the url of the toot
-
-# default="[Y]ank"
-hint="[Y]ank"
-
-# default=["y", "Y"]
-keys=["y","Y"]
-
-[input.status-toggle-cw]
-# Show the content in a content warning
-
-# default="Press [Z] to toggle cw"
-hint="Press [Z] to toggle cw"
-
-# default=["z", "Z"]
-keys=["z","Z"]
-
-[input.status-show-filtered]
-# Show the content of a filtered toot
-
-# default="Press [Z] to view filtered toot"
-hint="Press [Z] to view filtered toot"
-
-# default=["z", "Z"]
-keys=["z","Z"]
-
-[input.user-avatar]
-# View avatar
-
-# default="[A]vatar"
-hint="[A]vatar"
-
-# default=["a", "A"]
-keys=["a","A"]
-
-[input.user-block]
-# Block the user
-
-# default="[B]lock"
-hint="[B]lock"
-
-# default="Un[B]lock"
-hint-alt="Un[B]lock"
-
-# default=["b", "B"]
-keys=["b","B"]
-
-[input.user-follow]
-# Follow user
-
-# default="[F]ollow"
-hint="[F]ollow"
-
-# default="Un[F]ollow"
-hint-alt="Un[F]ollow"
-
-# default=["f", "F"]
-keys=["f","F"]
-
-[input.user-follow-request-decide]
-# Follow user
-
-# default="Follow [R]equest"
-hint="Follow [R]equest"
-
-# default="Follow [R]equest"
-hint-alt="Follow [R]equest"
-
-# default=["r", "R"]
-keys=["r","R"]
-
-[input.user-mute]
-# Mute user
-
-# default="[M]ute"
-hint="[M]ute"
-
-# default="Un[M]ute"
-hint-alt="Un[M]ute"
-
-# default=["m", "M"]
-keys=["m","M"]
-
-[input.user-links]
-# Open links
-
-# default="[O]pen"
-hint="[O]pen"
-
-# default=["o", "O"]
-keys=["o","O"]
-
-[input.user-user]
-# View user profile
-
-# default="[U]ser"
-hint="[U]ser"
-
-# default=["u", "U"]
-keys=["u","U"]
-
-[input.user-view-focus]
-# Open view mode
-
-# default="[V]iew"
-hint="[V]iew"
-
-# default=["v", "V"]
-keys=["v","V"]
-
-[input.user-yank]
-# Yank the user URL
-
-# default="[Y]ank"
-hint="[Y]ank"
-
-# default=["y", "Y"]
-keys=["y","Y"]
-
-[input.list-open-feed]
-# Open list
-
-# default="[O]pen"
-hint="[O]pen"
-
-# default=["o", "O"]
-keys=["o","O"]
-
-[input.list-user-list]
-# List all users in a list
-
-# default="[U]sers"
-hint="[U]sers"
-
-# default=["u", "U"]
-keys=["u","U"]
-
-[input.list-user-add]
-# Add user to list
-
-# default="[A]dd"
-hint="[A]dd"
-
-# default=["a", "A"]
-keys=["a","A"]
-
-[input.list-user-delete]
-# Delete user from list
-
-# default="[D]elete"
-hint="[D]elete"
-
-# default=["d", "D"]
-keys=["d","D"]
-
-[input.link-open]
-# Open URL
-
-# default="[O]pen"
-hint="[O]pen"
-
-# default=["o", "O"]
-keys=["o","O"]
-
-[input.link-yank]
-# Yank the URL
-
-# default="[Y]ank"
-hint="[Y]ank"
-
-# default=["y", "Y"]
-keys=["y","Y"]
-
-[input.tag-open-feed]
-# Open tag feed
-
-# default="[O]pen"
-hint="[O]pen"
-
-# default=["o", "O"]
-keys=["o","O"]
-
-[input.tag-follow]
-# Toggle follow on tag
-
-# default="[F]ollow"
-hint="[F]ollow"
-
-# default="Un[F]ollow"
-hint-alt="Un[F]ollow"
-
-# default=["f", "F"]
-keys=["f","F"]
-
-[input.compose-edit-cw]
-# Edit content warning text on new toot
-
-# default="[C]W text"
-hint="[C]W text"
-
-# default=["c", "C"]
-keys=["c","C"]
-
-[input.compose-edit-text]
-# Edit the text on new toot
-
-# default="[E]dit text"
-hint="[E]dit text"
-
-# default=["e", "E"]
-keys=["e","E"]
-
-[input.compose-include-quote]
-# Include a quote when replying
-
-# default="[I]nclude quote"
-hint="[I]nclude quote"
-
-# default=["i", "I"]
-keys=["i","I"]
-
-[input.compose-media-focus]
-# Focus on adding media to toot
-
-# default="[M]edia"
-hint="[M]edia"
-
-# default=["m", "M"]
-keys=["m","M"]
-
-[input.compose-post]
-# Post the new toot
-
-# default="[P]ost"
-hint="[P]ost"
-
-# default=["p", "P"]
-keys=["p","P"]
-
-[input.compose-toggle-content-warning]
-# Toggle content warning on toot
-
-# default="[T]oggle CW"
-hint="[T]oggle CW"
-
-# default=["t", "T"]
-keys=["t","T"]
-
-[input.compose-visibility]
-# Edit the visibility on new toot
-
-# default="[V]isibility"
-hint="[V]isibility"
-
-# default=["v", "V"]
-keys=["v","V"]
-
-[input.compose-language]
-# Edit the language of a toot
-
-# default="[L]ang"
-hint="[L]ang"
-
-# default=["l", "L"]
-keys=["l","L"]
-
-[input.compose-poll]
-# Switch to creating a poll
-
-# default="P[O]ll"
-hint="P[O]ll"
-
-# default=["o", "O"]
-keys=["o","O"]
-
-[input.media-delete]
-# Delete media file
-
-# default="[D]elete"
-hint="[D]elete"
-
-# default=["d", "D"]
-keys=["d","D"]
-
-[input.media-edit-desc]
-# Edit the description on media file
-
-# default="[E]dit desc"
-hint="[E]dit desc"
-
-# default=["e", "E"]
-keys=["e","E"]
-
-[input.media-add]
-# Add a new media file
-
-# default="[A]dd"
-hint="[A]dd"
-
-# default=["a", "A"]
-keys=["a","A"]
-
-[input.vote-vote]
-# Vote on poll
-
-# default="[V]ote"
-hint="[V]ote"
-
-# default=["v", "V"]
-keys=["v","V"]
-
-[input.vote-select]
-# Select item to vote on
-
-# default="[Enter] to select"
-hint="[Enter] to select"
-
-# default=["Enter"]
-special-keys=["Enter"]
-
-[input.poll-add]
-# Add a new poll option
-
-# default="[A]dd"
-hint="[A]dd"
-
-# default=["a", "A"]
-keys=["a","A"]
-
-[input.poll-edit]
-# Edit a poll option
-
-# default="[E]dit"
-hint="[E]dit"
-
-# default=["e", "E"]
-keys=["e","E"]
-
-[input.poll-delete]
-# Delete a poll option
-
-# default="[D]elete"
-hint="[D]elete"
-
-# default=["d", "D"]
-keys=["d","D"]
-
-[input.poll-multi-toggle]
-# Toggle voting on multiple options
-
-# default="Toggle [M]ultiple"
-hint="Toggle [M]ultiple"
-
-# default=["m", "M"]
-keys=["m","M"]
-
-[input.poll-expiration]
-# Change the expiration of poll
-
-# default="E[X]pires"
-hint="E[X]pires"
-
-# default=["x", "X"]
-keys=["x","X"]
-
-[input.preference-name]
-# Change display name
-
-# default="[N]ame"
-hint="[N]ame"
-
-# default=["n", "N"]
-keys=["n","N"]
-
-[input.preference-visibility]
-# Change default visibility of toots
-
-# default="[V]isibility"
-hint="[V]isibility"
-
-# default=["v", "V"]
-keys=["v","V"]
-
-[input.preference-bio]
-# Change bio in profile
-
-# default="[B]io"
-hint="[B]io"
-
-# default=["b", "B"]
-keys=["b","B"]
-
-[input.preference-save]
-# Save your preferences
-
-# default="[S]ave"
-hint="[S]ave"
-
-# default=["s", "S"]
-keys=["s","S"]
-
-[input.preference-fields]
-# Edit profile fields
-
-# default="[F]ields"
-hint="[F]ields"
-
-# default=["f", "F"]
-keys=["f","F"]
-
-[input.preference-fields-add]
-# Add new field
-
-# default="[A]dd"
-hint="[A]dd"
-
-# default=["a", "A"]
-keys=["a","A"]
-
-[input.preference-fields-edit]
-# Edit current field
-
-# default="[E]dit"
-hint="[E]dit"
-
-# default=["e", "E"]
-keys=["e","E"]
-
-[input.preference-fields-delete]
-# Delete current field
-
-# default="[D]elete"
-hint="[D]elete"
-
-# default=["d", "D"]
-keys=["d","D"]
-
-[input.editor-exit]
-# Exit the editor
-
-# default="[Esc] when done"
-hint="[Esc] when done"
-
-# default=["Esc"]
-special-keys=["Esc"]
-`
+global-down = { desc = "Keys for moving down", keys = ["j","J"], special-keys = ["Down"] }
+global-up = { desc = "Keys for moving down", keys = ["k","K"], special-keys = ["Up"] }
+global-enter = { desc = "To select items", special-keys = ["Enter"] }
+global-back = { desc = "To go back", hint = "[Esc]", special-keys = ["Esc"] }
+global-exit = { desc = "To go back or exit", hint = "[Q]uit", keys = ["q","Q"] }
+main-home = { desc = "Move to the top", keys = ["g"], special-keys = ["Home"] }
+main-end = { desc = "Move to the bottom", keys = ["G"], special-keys = ["End"] }
+main-prev-feed = { desc = "Go to previous feed", keys = ["h","H"], special-keys = ["Left"] }
+main-next-feed = { desc = "Go to next feed", keys = ["l","L"], special-keys = ["Right"] }
+main-prev-pane = { desc = "Focus on the previous feed pane", special-keys = ["Backtab"] }
+main-next-pane = { desc = "Focus on the next feed pane", special-keys = ["Tab"] }
+main-next-account = { desc = "Focus on the next account", special-keys = ["Ctrl-N"] }
+main-prev-account = { desc = "Focus on the previous account", special-keys = ["Ctrl-P"] }
+main-compose = { desc = "Compose a new toot", keys = ["c","C"] }
+status-avatar = { desc = "Open avatar", hint = "[A]vatar", keys = ["a","A"] }
+status-boost = { desc = "Boost a toot", hint = "[B]oost", keys = ["b","B"] }
+status-edit = { desc = "Edit a toot", hint = "[E]dit", keys = ["e","E"] }
+status-delete = { desc = "Delete a toot", hint = "[D]elete", keys = ["d","D"] }
+status-favorite = { desc = "Favorite a toot", hint = "[F]avorite", keys = ["f","F"] }
+status-media = { desc = "Open toots media files", hint = "[M]edia", keys = ["m","M"] }
+status-links = { desc = "Open links", hint = "[O]pen", keys = ["o","O"] }
+status-poll = { desc = "Open poll", hint = "[P]oll", keys = ["p","P"] }
+status-reply = { desc = "Reply to toot", hint = "[R]eply", keys = ["r","R"] }
+status-bookmark = { desc = "Save/bookmark a toot", hint = "[S]ave", hint-alt = "Un[S]ave", keys = ["s","S"] }
+status-thread = { desc = "View thread", hint = "[T]hread", keys = ["t","T"] }
+status-user = { desc = "Open user profile", hint = "[U]ser", keys = ["u","U"] }
+status-view-focus = { desc = "Open the view mode", hint = "[V]iew", keys = ["v","V"] }
+status-yank = { desc = "Yank the url of the toot", hint = "[Y]ank", keys = ["y","Y"] }
+status-toggle-cw = { desc = "Show the content in a content warning", hint = "Press [Z] to toggle cw", keys = ["z","Z"] }
+status-show-filtered = { desc = "Show the content of a filtered toot", hint = "Press [Z] to view filtered toot", keys = ["z","Z"] }
+user-avatar = { desc = "View avatar", hint = "[A]vatar", keys = ["a","A"] }
+user-block = { desc = "Block the user", hint = "[B]lock", hint-alt = "Un[B]lock", keys = ["b","B"] }
+user-follow = { desc = "Follow user", hint = "[F]ollow", hint-alt = "Un[F]ollow", keys = ["f","F"] }
+user-follow-request-decide = { desc = "Follow user", hint = "Follow [R]equest", hint-alt = "Follow [R]equest", keys = ["r","R"] }
+user-mute = { desc = "Mute user", hint = "[M]ute", hint-alt = "Un[M]ute", keys = ["m","M"] }
+user-links = { desc = "Open links", hint = "[O]pen", keys = ["o","O"] }
+user-user = { desc = "View user profile", hint = "[U]ser", keys = ["u","U"] }
+user-view-focus = { desc = "Open view mode", hint = "[V]iew", keys = ["v","V"] }
+user-yank = { desc = "Yank the user URL", hint = "[Y]ank", keys = ["y","Y"] }
+list-open-feed = { desc = "Open list", hint = "[O]pen", keys = ["o","O"] }
+list-user-list = { desc = "List all users in a list", hint = "[U]sers", keys = ["u","U"] }
+list-user-add = { desc = "Add user to list", hint = "[A]dd", keys = ["a","A"] }
+list-user-delete = { desc = "Delete user from list", hint = "[D]elete", keys = ["d","D"] }
+link-open = { desc = "Open URL", hint = "[O]pen", keys = ["o","O"] }
+link-yank = { desc = "Yank the URL", hint = "[Y]ank", keys = ["y","Y"] }
+tag-open-feed = { desc = "Open tag feed", hint = "[O]pen", keys = ["o","O"] }
+tag-follow = { desc = "Toggle follow on tag", hint = "[F]ollow", hint-alt = "Un[F]ollow", keys = ["f","F"] }
+compose-edit-cw = { desc = "Edit content warning text on new toot", hint = "[C]W text", keys = ["c","C"] }
+compose-edit-text = { desc = "Edit the text on new toot", hint = "[E]dit text", keys = ["e","E"] }
+compose-include-quote = { desc = "Include a quote when replying", hint = "[I]nclude quote", keys = ["i","I"] }
+compose-media-focus = { desc = "Focus on adding media to toot", hint = "[M]edia", keys = ["m","M"] }
+compose-post = { desc = "Post the new toot", hint = "[P]ost", keys = ["p","P"] }
+compose-toggle-content-warning = { desc = "Toggle content warning on toot", hint = "[T]oggle CW", keys = ["t","T"] }
+compose-visibility = { desc = "Edit the visibility on new toot", hint = "[V]isibility", keys = ["v","V"] }
+compose-language = { desc = "Edit the language of a toot", hint = "[L]ang", keys = ["l","L"] }
+compose-poll = { desc = "Switch to creating a poll", hint = "P[O]ll", keys = ["o","O"] }
+media-delete = { desc = "Delete media file", hint = "[D]elete", keys = ["d","D"] }
+media-edit-desc = { desc = "Edit the description on media file", hint = "[E]dit desc", keys = ["e","E"] }
+media-add = { desc = "Add a new media file", hint = "[A]dd", keys = ["a","A"] }
+vote-vote = { desc = "Vote on poll", hint = "[V]ote", keys = ["v","V"] }
+vote-select = { desc = "Select item to vote on", hint = "[Enter] to select", special-keys = ["Enter"] }
+poll-add = { desc = "Add a new poll option", hint = "[A]dd", keys = ["a","A"] }
+poll-edit = { desc = "Edit a poll option", hint = "[E]dit", keys = ["e","E"] }
+poll-delete = { desc = "Delete a poll option", hint = "[D]elete", keys = ["d","D"] }
+poll-multi-toggle = { desc = "Toggle voting on multiple options", hint = "Toggle [M]ultiple", keys = ["m","M"] }
+poll-expiration = { desc = "Change the expiration of poll", hint = "E[X]pires", keys = ["x","X"] }
+preference-name = { desc = "Change display name", hint = "[N]ame", keys = ["n","N"] }
+preference-visibility = { desc = "Change default visibility of toots", hint = "[V]isibility", keys = ["v","V"] }
+preference-bio = { desc = "Change bio in profile", hint = "[B]io", keys = ["b","B"] }
+preference-save = { desc = "Save your preferences", hint = "[S]ave", keys = ["s","S"] }
+preference-fields = { desc = "Edit profile fields", hint = "[F]ields", keys = ["f","F"] }
+preference-fields-add = { desc = "Add new field", hint = "[A]dd", keys = ["a","A"] }
+preference-fields-edit = { desc = "Edit current field", hint = "[E]dit", keys = ["e","E"] }
+preference-fields-delete = { desc = "Delete current field", hint = "[D]elete", keys = ["d","D"] }
+editor-exit = { desc = "Exit the editor", hint = "[Esc] when done", special-keys = ["Esc"] }

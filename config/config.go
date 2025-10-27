@@ -18,6 +18,9 @@ import (
 	"github.com/pelletier/go-toml/v2"
 )
 
+//go:embed default_config.toml
+var default_conftext string
+
 //go:embed toot.tmpl
 var tootTemplate string
 
@@ -159,7 +162,7 @@ type Timeline struct {
 	FeedType    FeedType
 	Subaction   string
 	Name        string
-	Key         Key
+	Key         InputAction
 	Shortcut    string
 	HideBoosts  bool
 	HideReplies bool
@@ -286,7 +289,7 @@ type Custom struct {
 	Program  string
 	Args     []string
 	Terminal bool
-	Key      Key
+	Key      InputAction
 }
 type OpenCustom struct {
 	OpenCustoms []Custom
@@ -377,8 +380,8 @@ func newHint(s string) []string {
 	return []string{matches[0][1], matches[0][2], matches[0][3]}
 }
 
-func NewKey(hint string, hintAlt string, keys []string, special []string) (Key, error) {
-	k := Key{}
+func NewKey(desc string, hint string, hintAlt string, keys []string, special []string) (InputAction, error) {
+	k := InputAction{Description: desc}
 	if len(hint) > 0 && len(hintAlt) > 0 {
 		k.Hint = [][]string{newHint(hint), newHint(hintAlt)}
 	} else if len(hint) > 0 {
@@ -417,13 +420,14 @@ func NewKey(hint string, hintAlt string, keys []string, special []string) (Key, 
 	return k, nil
 }
 
-type Key struct {
+type InputAction struct {
+	Description string
 	Hint  [][]string
 	Runes []rune
 	Keys  []tcell.Key
 }
 
-func (k Key) Match(kb tcell.Key, rb rune) bool {
+func (k InputAction) Match(kb tcell.Key, rb rune) bool {
 	for _, ka := range k.Keys {
 		if ka == kb {
 			return true
@@ -438,93 +442,93 @@ func (k Key) Match(kb tcell.Key, rb rune) bool {
 }
 
 type Input struct {
-	GlobalDown  Key
-	GlobalUp    Key
-	GlobalEnter Key
-	GlobalBack  Key
-	GlobalExit  Key
+	GlobalDown  InputAction
+	GlobalUp    InputAction
+	GlobalEnter InputAction
+	GlobalBack  InputAction
+	GlobalExit  InputAction
 
-	MainHome        Key
-	MainEnd         Key
-	MainPrevFeed    Key
-	MainNextFeed    Key
-	MainPrevPane    Key
-	MainNextPane    Key
-	MainCompose     Key
-	MainNextAccount Key
-	MainPrevAccount Key
+	MainHome        InputAction
+	MainEnd         InputAction
+	MainPrevFeed    InputAction
+	MainNextFeed    InputAction
+	MainPrevPane    InputAction
+	MainNextPane    InputAction
+	MainCompose     InputAction
+	MainNextAccount InputAction
+	MainPrevAccount InputAction
 
-	StatusAvatar       Key
-	StatusBoost        Key
-	StatusDelete       Key
-	StatusEdit         Key
-	StatusFavorite     Key
-	StatusMedia        Key
-	StatusLinks        Key
-	StatusPoll         Key
-	StatusReply        Key
-	StatusBookmark     Key
-	StatusThread       Key
-	StatusUser         Key
-	StatusViewFocus    Key
-	StatusYank         Key
-	StatusToggleCW     Key
-	StatusShowFiltered Key
+	StatusAvatar       InputAction
+	StatusBoost        InputAction
+	StatusDelete       InputAction
+	StatusEdit         InputAction
+	StatusFavorite     InputAction
+	StatusMedia        InputAction
+	StatusLinks        InputAction
+	StatusPoll         InputAction
+	StatusReply        InputAction
+	StatusBookmark     InputAction
+	StatusThread       InputAction
+	StatusUser         InputAction
+	StatusViewFocus    InputAction
+	StatusYank         InputAction
+	StatusToggleCW     InputAction
+	StatusShowFiltered InputAction
 
-	UserAvatar              Key
-	UserBlock               Key
-	UserFollow              Key
-	UserFollowRequestDecide Key
-	UserMute                Key
-	UserLinks               Key
-	UserUser                Key
-	UserViewFocus           Key
-	UserYank                Key
+	UserAvatar              InputAction
+	UserBlock               InputAction
+	UserFollow              InputAction
+	UserFollowRequestDecide InputAction
+	UserMute                InputAction
+	UserLinks               InputAction
+	UserUser                InputAction
+	UserViewFocus           InputAction
+	UserYank                InputAction
 
-	ListOpenFeed   Key
-	ListUserList   Key
-	ListUserAdd    Key
-	ListUserDelete Key
+	ListOpenFeed   InputAction
+	ListUserList   InputAction
+	ListUserAdd    InputAction
+	ListUserDelete InputAction
 
-	TagOpenFeed Key
-	TagFollow   Key
+	TagOpenFeed InputAction
+	TagFollow   InputAction
 
-	LinkOpen Key
-	LinkYank Key
+	LinkOpen InputAction
+	LinkYank InputAction
 
-	ComposeEditCW               Key
-	ComposeEditText             Key
-	ComposeIncludeQuote         Key
-	ComposeMediaFocus           Key
-	ComposePost                 Key
-	ComposeToggleContentWarning Key
-	ComposeVisibility           Key
-	ComposeLanguage             Key
-	ComposePoll                 Key
+	ComposeEditCW               InputAction
+	ComposeEditText             InputAction
+	ComposeIncludeQuote         InputAction
+	ComposeMediaFocus           InputAction
+	ComposePost                 InputAction
+	ComposeToggleContentWarning InputAction
+	ComposeVisibility           InputAction
+	ComposeLanguage             InputAction
+	ComposePoll                 InputAction
 
-	MediaDelete   Key
-	MediaEditDesc Key
-	MediaAdd      Key
+	MediaDelete   InputAction
+	MediaEditDesc InputAction
+	MediaAdd      InputAction
 
-	VoteVote   Key
-	VoteSelect Key
+	VoteVote   InputAction
+	VoteSelect InputAction
 
-	PollAdd         Key
-	PollEdit        Key
-	PollDelete      Key
-	PollMultiToggle Key
-	PollExpiration  Key
+	PollAdd         InputAction
+	PollEdit        InputAction
+	PollDelete      InputAction
+	PollMultiToggle InputAction
+	PollExpiration  InputAction
 
-	PreferenceName         Key
-	PreferenceVisibility   Key
-	PreferenceBio          Key
-	PreferenceSave         Key
-	PreferenceFields       Key
-	PreferenceFieldsAdd    Key
-	PreferenceFieldsEdit   Key
-	PreferenceFieldsDelete Key
+	PreferenceName         InputAction
+	PreferenceVisibility   InputAction
+	PreferenceBio          InputAction
+	PreferenceSave         InputAction
+	PreferenceFields       InputAction
+	PreferenceFieldsAdd    InputAction
+	PreferenceFieldsEdit   InputAction
+	PreferenceFieldsDelete InputAction
 
-	EditorExit Key
+	EditorExit InputAction
 }
 
 func parseColor(input string, def string, xrdb map[string]string) tcell.Color {
@@ -1043,7 +1047,7 @@ func parseGeneral(cfg GeneralTOML) General {
 					special = *l.SpecialKeys
 				}
 				var err error
-				tl.Key, err = NewKey("", "", keys, special)
+				tl.Key, err = NewKey("", "", "", keys, special)
 				if err != nil {
 					fmt.Println(err)
 					os.Exit(1)
@@ -1065,7 +1069,7 @@ func parseGeneral(cfg GeneralTOML) General {
 				Name:     "Home",
 			}),
 		)
-		kn, err := NewKey("", "", []string{"n", "N"}, []string{})
+		kn, err := NewKey("", "", "", []string{"n", "N"}, []string{})
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
@@ -1160,6 +1164,7 @@ func parseCustom(cfg OpenCustomTOML) OpenCustom {
 			special = *x.SpecialKeys
 		}
 		key, err := NewKey(
+			NilDefaultString(x.Program, sp("")),
 			NilDefaultString(x.Hint, sp("")),
 			"", keys, special,
 		)
@@ -1257,7 +1262,7 @@ func parseTemplates(cfg ConfigTOML, cnfPath string, cnfDir string) Templates {
 	}
 }
 
-func inputOrDef(keyName string, user *KeyHintTOML, def *KeyHintTOML, double bool) Key {
+func inputOrDef(keyName string, user *InputActionTOML, def *InputActionTOML, double bool) InputAction {
 	values := *def
 	if user != nil {
 		values = *user
@@ -1270,6 +1275,7 @@ func inputOrDef(keyName string, user *KeyHintTOML, def *KeyHintTOML, double bool
 		special = *values.SpecialKeys
 	}
 	key, err := NewKey(
+		NilDefaultString(values.Description, sp("")),
 		NilDefaultString(values.Hint, sp("")),
 		NilDefaultString(values.HintAlt, sp("")),
 		keys, special,
@@ -1453,7 +1459,7 @@ func CreateDefaultConfig(filepath string) error {
 		return err
 	}
 	defer f.Close()
-	_, err = f.WriteString(conftext)
+	_, err = f.WriteString(default_conftext)
 	if err != nil {
 		return err
 	}

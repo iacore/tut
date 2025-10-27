@@ -160,7 +160,9 @@ type NotificationsTOML struct {
 	Posts     *bool `toml:"posts"`
 }
 
-type KeyHintTOML struct {
+type InputActionTOML struct {
+	// key description
+	Description *string   `toml:"desc"`
 	Hint        *string   `toml:"hint"`
 	HintAlt     *string   `toml:"hint-alt"`
 	Keys        *[]string `toml:"keys"`
@@ -168,91 +170,91 @@ type KeyHintTOML struct {
 }
 
 type InputTOML struct {
-	GlobalDown  *KeyHintTOML `toml:"global-down"`
-	GlobalUp    *KeyHintTOML `toml:"global-up"`
-	GlobalEnter *KeyHintTOML `toml:"global-enter"`
-	GlobalBack  *KeyHintTOML `toml:"global-back"`
-	GlobalExit  *KeyHintTOML `toml:"global-exit"`
+	GlobalDown  *InputActionTOML `toml:"global-down"`
+	GlobalUp    *InputActionTOML `toml:"global-up"`
+	GlobalEnter *InputActionTOML `toml:"global-enter"`
+	GlobalBack  *InputActionTOML `toml:"global-back"`
+	GlobalExit  *InputActionTOML `toml:"global-exit"`
 
-	MainHome        *KeyHintTOML `toml:"main-home"`
-	MainEnd         *KeyHintTOML `toml:"main-end"`
-	MainPrevFeed    *KeyHintTOML `toml:"main-prev-feed"`
-	MainNextFeed    *KeyHintTOML `toml:"main-next-feed"`
-	MainPrevPane    *KeyHintTOML `toml:"main-prev-pane"`
-	MainNextPane    *KeyHintTOML `toml:"main-next-pane"`
-	MainCompose     *KeyHintTOML `toml:"main-compose"`
-	MainNextAccount *KeyHintTOML `toml:"main-next-account"`
-	MainPrevAccount *KeyHintTOML `toml:"main-prev-account"`
+	MainHome        *InputActionTOML `toml:"main-home"`
+	MainEnd         *InputActionTOML `toml:"main-end"`
+	MainPrevFeed    *InputActionTOML `toml:"main-prev-feed"`
+	MainNextFeed    *InputActionTOML `toml:"main-next-feed"`
+	MainPrevPane    *InputActionTOML `toml:"main-prev-pane"`
+	MainNextPane    *InputActionTOML `toml:"main-next-pane"`
+	MainCompose     *InputActionTOML `toml:"main-compose"`
+	MainNextAccount *InputActionTOML `toml:"main-next-account"`
+	MainPrevAccount *InputActionTOML `toml:"main-prev-account"`
 
-	StatusAvatar       *KeyHintTOML `toml:"status-avatar"`
-	StatusBoost        *KeyHintTOML `toml:"status-boost"`
-	StatusDelete       *KeyHintTOML `toml:"status-delete"`
-	StatusEdit         *KeyHintTOML `toml:"status-edit"`
-	StatusFavorite     *KeyHintTOML `toml:"status-favorite"`
-	StatusMedia        *KeyHintTOML `toml:"status-media"`
-	StatusLinks        *KeyHintTOML `toml:"status-links"`
-	StatusPoll         *KeyHintTOML `toml:"status-poll"`
-	StatusReply        *KeyHintTOML `toml:"status-reply"`
-	StatusBookmark     *KeyHintTOML `toml:"status-bookmark"`
-	StatusThread       *KeyHintTOML `toml:"status-thread"`
-	StatusUser         *KeyHintTOML `toml:"status-user"`
-	StatusViewFocus    *KeyHintTOML `toml:"status-view-focus"`
-	StatusYank         *KeyHintTOML `toml:"status-yank"`
-	StatusToggleCW     *KeyHintTOML `toml:"status-toggle-cw"`
-	StatusShowFiltered *KeyHintTOML `toml:"status-show-filtered"`
+	StatusAvatar       *InputActionTOML `toml:"status-avatar"`
+	StatusBoost        *InputActionTOML `toml:"status-boost"`
+	StatusDelete       *InputActionTOML `toml:"status-delete"`
+	StatusEdit         *InputActionTOML `toml:"status-edit"`
+	StatusFavorite     *InputActionTOML `toml:"status-favorite"`
+	StatusMedia        *InputActionTOML `toml:"status-media"`
+	StatusLinks        *InputActionTOML `toml:"status-links"`
+	StatusPoll         *InputActionTOML `toml:"status-poll"`
+	StatusReply        *InputActionTOML `toml:"status-reply"`
+	StatusBookmark     *InputActionTOML `toml:"status-bookmark"`
+	StatusThread       *InputActionTOML `toml:"status-thread"`
+	StatusUser         *InputActionTOML `toml:"status-user"`
+	StatusViewFocus    *InputActionTOML `toml:"status-view-focus"`
+	StatusYank         *InputActionTOML `toml:"status-yank"`
+	StatusToggleCW     *InputActionTOML `toml:"status-toggle-cw"`
+	StatusShowFiltered *InputActionTOML `toml:"status-show-filtered"`
 
-	UserAvatar              *KeyHintTOML `toml:"user-avatar"`
-	UserBlock               *KeyHintTOML `toml:"user-block"`
-	UserFollow              *KeyHintTOML `toml:"user-follow"`
-	UserFollowRequestDecide *KeyHintTOML `toml:"user-follow-request-decide"`
-	UserMute                *KeyHintTOML `toml:"user-mute"`
-	UserLinks               *KeyHintTOML `toml:"user-links"`
-	UserUser                *KeyHintTOML `toml:"user-user"`
-	UserViewFocus           *KeyHintTOML `toml:"user-view-focus"`
-	UserYank                *KeyHintTOML `toml:"user-yank"`
+	UserAvatar              *InputActionTOML `toml:"user-avatar"`
+	UserBlock               *InputActionTOML `toml:"user-block"`
+	UserFollow              *InputActionTOML `toml:"user-follow"`
+	UserFollowRequestDecide *InputActionTOML `toml:"user-follow-request-decide"`
+	UserMute                *InputActionTOML `toml:"user-mute"`
+	UserLinks               *InputActionTOML `toml:"user-links"`
+	UserUser                *InputActionTOML `toml:"user-user"`
+	UserViewFocus           *InputActionTOML `toml:"user-view-focus"`
+	UserYank                *InputActionTOML `toml:"user-yank"`
 
-	ListOpenFeed   *KeyHintTOML `toml:"list-open-feed"`
-	ListUserList   *KeyHintTOML `toml:"list-user-list"`
-	ListUserAdd    *KeyHintTOML `toml:"list-user-add"`
-	ListUserDelete *KeyHintTOML `toml:"list-user-delete"`
+	ListOpenFeed   *InputActionTOML `toml:"list-open-feed"`
+	ListUserList   *InputActionTOML `toml:"list-user-list"`
+	ListUserAdd    *InputActionTOML `toml:"list-user-add"`
+	ListUserDelete *InputActionTOML `toml:"list-user-delete"`
 
-	TagOpenFeed *KeyHintTOML `toml:"tag-open-feed"`
-	TagFollow   *KeyHintTOML `toml:"tag-follow"`
+	TagOpenFeed *InputActionTOML `toml:"tag-open-feed"`
+	TagFollow   *InputActionTOML `toml:"tag-follow"`
 
-	LinkOpen *KeyHintTOML `toml:"link-open"`
-	LinkYank *KeyHintTOML `toml:"link-yank"`
+	LinkOpen *InputActionTOML `toml:"link-open"`
+	LinkYank *InputActionTOML `toml:"link-yank"`
 
-	ComposeEditCW               *KeyHintTOML `toml:"compose-edit-cw"`
-	ComposeEditText             *KeyHintTOML `toml:"compose-edit-text"`
-	ComposeIncludeQuote         *KeyHintTOML `toml:"compose-include-quote"`
-	ComposeMediaFocus           *KeyHintTOML `toml:"compose-media-focus"`
-	ComposePost                 *KeyHintTOML `toml:"compose-post"`
-	ComposeToggleContentWarning *KeyHintTOML `toml:"compose-toggle-content-warning"`
-	ComposeVisibility           *KeyHintTOML `toml:"compose-visibility"`
-	ComposeLanguage             *KeyHintTOML `toml:"compose-language"`
-	ComposePoll                 *KeyHintTOML `toml:"compose-poll"`
+	ComposeEditCW               *InputActionTOML `toml:"compose-edit-cw"`
+	ComposeEditText             *InputActionTOML `toml:"compose-edit-text"`
+	ComposeIncludeQuote         *InputActionTOML `toml:"compose-include-quote"`
+	ComposeMediaFocus           *InputActionTOML `toml:"compose-media-focus"`
+	ComposePost                 *InputActionTOML `toml:"compose-post"`
+	ComposeToggleContentWarning *InputActionTOML `toml:"compose-toggle-content-warning"`
+	ComposeVisibility           *InputActionTOML `toml:"compose-visibility"`
+	ComposeLanguage             *InputActionTOML `toml:"compose-language"`
+	ComposePoll                 *InputActionTOML `toml:"compose-poll"`
 
-	MediaDelete   *KeyHintTOML `toml:"media-delete"`
-	MediaEditDesc *KeyHintTOML `toml:"media-edit-desc"`
-	MediaAdd      *KeyHintTOML `toml:"media-add"`
+	MediaDelete   *InputActionTOML `toml:"media-delete"`
+	MediaEditDesc *InputActionTOML `toml:"media-edit-desc"`
+	MediaAdd      *InputActionTOML `toml:"media-add"`
 
-	VoteVote   *KeyHintTOML `toml:"vote-vote"`
-	VoteSelect *KeyHintTOML `toml:"vote-select"`
+	VoteVote   *InputActionTOML `toml:"vote-vote"`
+	VoteSelect *InputActionTOML `toml:"vote-select"`
 
-	PollAdd         *KeyHintTOML `toml:"poll-add"`
-	PollEdit        *KeyHintTOML `toml:"poll-edit"`
-	PollDelete      *KeyHintTOML `toml:"poll-delete"`
-	PollMultiToggle *KeyHintTOML `toml:"poll-multi-toggle"`
-	PollExpiration  *KeyHintTOML `toml:"poll-expiration"`
+	PollAdd         *InputActionTOML `toml:"poll-add"`
+	PollEdit        *InputActionTOML `toml:"poll-edit"`
+	PollDelete      *InputActionTOML `toml:"poll-delete"`
+	PollMultiToggle *InputActionTOML `toml:"poll-multi-toggle"`
+	PollExpiration  *InputActionTOML `toml:"poll-expiration"`
 
-	PreferenceName         *KeyHintTOML `toml:"preference-name"`
-	PreferenceVisibility   *KeyHintTOML `toml:"preference-visibility"`
-	PreferenceBio          *KeyHintTOML `toml:"preference-bio"`
-	PreferenceSave         *KeyHintTOML `toml:"preference-save"`
-	PreferenceFields       *KeyHintTOML `toml:"preference-fields"`
-	PreferenceFieldsAdd    *KeyHintTOML `toml:"preference-fields-add"`
-	PreferenceFieldsEdit   *KeyHintTOML `toml:"preference-fields-edit"`
-	PreferenceFieldsDelete *KeyHintTOML `toml:"preference-fields-delete"`
+	PreferenceName         *InputActionTOML `toml:"preference-name"`
+	PreferenceVisibility   *InputActionTOML `toml:"preference-visibility"`
+	PreferenceBio          *InputActionTOML `toml:"preference-bio"`
+	PreferenceSave         *InputActionTOML `toml:"preference-save"`
+	PreferenceFields       *InputActionTOML `toml:"preference-fields"`
+	PreferenceFieldsAdd    *InputActionTOML `toml:"preference-fields-add"`
+	PreferenceFieldsEdit   *InputActionTOML `toml:"preference-fields-edit"`
+	PreferenceFieldsDelete *InputActionTOML `toml:"preference-fields-delete"`
 
-	EditorExit *KeyHintTOML `toml:"editor-exit"`
+	EditorExit *InputActionTOML `toml:"editor-exit"`
 }

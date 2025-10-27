@@ -1,0 +1,7 @@
+[Exit compose view?] confirm dialog is fullscreen. it should be a small popup window.
+
+Loading new posts in timeline freezes the UI.
+Race conditions. Opening multiple threads in one panel might race condition and mess up history.
+kitty image protocol
+
+switch keymap to kakoune

@@ -6,7 +6,7 @@ import (
 	"github.com/gdamore/tcell/v2"
 )
 
-func ColorFromKey(c *Config, k Key, first bool) (string, int) {
+func ColorFromKey(c *Config, k InputAction, first bool) (string, int) {
 	if len(k.Hint) == 0 {
 		return "", 0
 	}
