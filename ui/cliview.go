@@ -6,9 +6,10 @@ import (
 	"os"
 	"strings"
 
+	"github.com/spf13/pflag"
+
 	"github.com/RasmusLindroth/tut/config"
 	"github.com/RasmusLindroth/tut/util"
-	"github.com/spf13/pflag"
 )
 
 func CliView(version string) (newUser bool, selectedUser string, confPath string, confDir string) {

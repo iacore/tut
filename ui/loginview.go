@@ -3,8 +3,9 @@ package ui
 import (
 	"fmt"
 
-	"github.com/RasmusLindroth/tut/auth"
 	"github.com/rivo/tview"
+
+	"github.com/RasmusLindroth/tut/auth"
 )
 
 type LoginView struct {

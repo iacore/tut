@@ -1,9 +1,10 @@
 package ui
 
 import (
-	"github.com/RasmusLindroth/tut/config"
 	"github.com/gdamore/tcell/v2"
 	"github.com/rivo/tview"
+
+	"github.com/RasmusLindroth/tut/config"
 )
 
 func NewModal(cnf *config.Config) *tview.Modal {

@@ -3,8 +3,9 @@ package ui
 import (
 	"bytes"
 
-	"github.com/RasmusLindroth/tut/config"
 	"github.com/rivo/tview"
+
+	"github.com/RasmusLindroth/tut/config"
 )
 
 type HelpView struct {

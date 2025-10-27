@@ -10,10 +10,11 @@ import (
 
 	"github.com/Arceliar/phony"
 	"github.com/RasmusLindroth/go-mastodon"
+	"github.com/rivo/tview"
+
 	"github.com/RasmusLindroth/tut/api"
 	"github.com/RasmusLindroth/tut/auth"
 	"github.com/RasmusLindroth/tut/config"
-	"github.com/rivo/tview"
 )
 
 type TimelineFocusAt uint

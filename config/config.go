@@ -12,10 +12,11 @@ import (
 	"sync"
 	"text/template"
 
-	"github.com/RasmusLindroth/tut/util"
 	"github.com/gdamore/tcell/v2"
 	"github.com/gobwas/glob"
 	"github.com/pelletier/go-toml/v2"
+
+	"github.com/RasmusLindroth/tut/util"
 )
 
 //go:embed default_config.toml
@@ -422,9 +423,9 @@ func NewKey(desc string, hint string, hintAlt string, keys []string, special []s
 
 type InputAction struct {
 	Description string
-	Hint  [][]string
-	Runes []rune
-	Keys  []tcell.Key
+	Hint        [][]string
+	Runes       []rune
+	Keys        []tcell.Key
 }
 
 func (k InputAction) Match(kb tcell.Key, rb rune) bool {

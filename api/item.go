@@ -5,9 +5,10 @@ import (
 	"sync"
 
 	"github.com/RasmusLindroth/go-mastodon"
+	"golang.org/x/exp/slices"
+
 	"github.com/RasmusLindroth/tut/config"
 	"github.com/RasmusLindroth/tut/util"
-	"golang.org/x/exp/slices"
 )
 
 var id uint = 0

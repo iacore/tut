@@ -6,10 +6,11 @@ import (
 	"time"
 
 	"github.com/RasmusLindroth/go-mastodon"
-	"github.com/RasmusLindroth/tut/api"
-	"github.com/RasmusLindroth/tut/config"
 	"github.com/icza/gox/timex"
 	"github.com/rivo/tview"
+
+	"github.com/RasmusLindroth/tut/api"
+	"github.com/RasmusLindroth/tut/config"
 )
 
 func DrawListItem(cfg *config.Config, item api.Item) (string, string) {

@@ -9,13 +9,14 @@ import (
 	"time"
 
 	"github.com/RasmusLindroth/go-mastodon"
-	"github.com/RasmusLindroth/tut/api"
-	"github.com/RasmusLindroth/tut/config"
-	"github.com/RasmusLindroth/tut/util"
 	"github.com/gdamore/tcell/v2"
 	"github.com/rivo/tview"
 	"github.com/rivo/uniseg"
 	"mvdan.cc/xurls/v2"
+
+	"github.com/RasmusLindroth/tut/api"
+	"github.com/RasmusLindroth/tut/config"
+	"github.com/RasmusLindroth/tut/util"
 )
 
 type msgToot struct {

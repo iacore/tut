@@ -3,8 +3,9 @@ package ui
 import (
 	"fmt"
 
-	"github.com/RasmusLindroth/tut/config"
 	"github.com/rivo/tview"
+
+	"github.com/RasmusLindroth/tut/config"
 )
 
 type LinkView struct {

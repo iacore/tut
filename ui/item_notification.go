@@ -3,10 +3,11 @@ package ui
 import (
 	"fmt"
 
+	"github.com/rivo/tview"
+
 	"github.com/RasmusLindroth/tut/api"
 	"github.com/RasmusLindroth/tut/config"
 	"github.com/RasmusLindroth/tut/util"
-	"github.com/rivo/tview"
 )
 
 func drawNotification(tv *TutView, notification *api.NotificationData, main *tview.TextView, controls *tview.Flex) {

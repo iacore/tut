@@ -4,8 +4,9 @@ import (
 	"fmt"
 	"net/url"
 
-	"github.com/RasmusLindroth/tut/util"
 	"github.com/rivo/tview"
+
+	"github.com/RasmusLindroth/tut/util"
 )
 
 type Top struct {

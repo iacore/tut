@@ -11,9 +11,10 @@ import (
 
 	"github.com/Arceliar/phony"
 	"github.com/RasmusLindroth/go-mastodon"
+	"golang.org/x/exp/slices"
+
 	"github.com/RasmusLindroth/tut/api"
 	"github.com/RasmusLindroth/tut/config"
-	"golang.org/x/exp/slices"
 )
 
 type apiFunc func(pg *mastodon.Pagination) ([]api.Item, error)

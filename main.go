@@ -3,11 +3,12 @@ package main
 import (
 	"strings"
 
+	"github.com/rivo/tview"
+
 	"github.com/RasmusLindroth/tut/auth"
 	"github.com/RasmusLindroth/tut/config"
 	"github.com/RasmusLindroth/tut/ui"
 	"github.com/RasmusLindroth/tut/util"
-	"github.com/rivo/tview"
 )
 
 const version = "2.0.1"

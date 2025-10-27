@@ -4,8 +4,9 @@ import (
 	"fmt"
 
 	"github.com/Arceliar/phony"
-	"github.com/RasmusLindroth/tut/config"
 	"github.com/rivo/tview"
+
+	"github.com/RasmusLindroth/tut/config"
 )
 
 type MainView struct {

@@ -1,8 +1,9 @@
 package ui
 
 import (
-	"github.com/RasmusLindroth/tut/config"
 	"github.com/gdamore/tcell/v2"
+
+	"github.com/RasmusLindroth/tut/config"
 )
 
 type Control struct {

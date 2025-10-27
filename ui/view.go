@@ -4,6 +4,7 @@ import (
 	"log"
 
 	"github.com/RasmusLindroth/go-mastodon"
+
 	"github.com/RasmusLindroth/tut/api"
 )
 

@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/RasmusLindroth/go-mastodon"
+
 	"github.com/RasmusLindroth/tut/util"
 )
 

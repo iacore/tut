@@ -7,10 +7,11 @@ import (
 	"time"
 
 	"github.com/RasmusLindroth/go-mastodon"
+	"github.com/rivo/tview"
+
 	"github.com/RasmusLindroth/tut/api"
 	"github.com/RasmusLindroth/tut/config"
 	"github.com/RasmusLindroth/tut/util"
-	"github.com/rivo/tview"
 )
 
 type Toot struct {

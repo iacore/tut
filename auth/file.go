@@ -6,8 +6,9 @@ import (
 	"os"
 	"strings"
 
-	"github.com/RasmusLindroth/tut/util"
 	"github.com/pelletier/go-toml/v2"
+
+	"github.com/RasmusLindroth/tut/util"
 )
 
 func GetSecret(s string) string {
