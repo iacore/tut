@@ -10,9 +10,8 @@ import (
 
 type TimelineType uint
 
-func (ac *AccountClient) getStatusSimilar(fn func() ([]*mastodon.Status, error), timeline string) ([]Item, error) {
+func (ac *AccountClient) getStatusSimilar(statuses []*mastodon.Status, err error) ([]Item, error) {
 	var items []Item
-	statuses, err := fn()
 	if err != nil {
 		return items, err
 	}
@@ -23,9 +22,8 @@ func (ac *AccountClient) getStatusSimilar(fn func() ([]*mastodon.Status, error),
 	return items, nil
 }
 
-func (ac *AccountClient) getUserSimilar(fn func() ([]*mastodon.Account, error), data interface{}) ([]Item, error) {
+func (ac *AccountClient) getUserSimilar(users []*mastodon.Account, err error, data interface{}) ([]Item, error) {
 	var items []Item
-	users, err := fn()
 	if err != nil {
 		return items, err
 	}
@@ -53,24 +51,15 @@ func (ac *AccountClient) getUserSimilar(fn func() ([]*mastodon.Account, error), 
 }
 
 func (ac *AccountClient) GetTimeline(pg *mastodon.Pagination) ([]Item, error) {
-	fn := func() ([]*mastodon.Status, error) {
-		return ac.Client.GetTimelineHome(context.Background(), pg)
-	}
-	return ac.getStatusSimilar(fn, "home")
+	return ac.getStatusSimilar(ac.Client.GetTimelineHome(context.Background(), pg))
 }
 
 func (ac *AccountClient) GetTimelineFederated(pg *mastodon.Pagination) ([]Item, error) {
-	fn := func() ([]*mastodon.Status, error) {
-		return ac.Client.GetTimelinePublic(context.Background(), false, pg)
-	}
-	return ac.getStatusSimilar(fn, "public")
+	return ac.getStatusSimilar(ac.Client.GetTimelinePublic(context.Background(), false, pg))
 }
 
 func (ac *AccountClient) GetTimelineLocal(pg *mastodon.Pagination) ([]Item, error) {
-	fn := func() ([]*mastodon.Status, error) {
-		return ac.Client.GetTimelinePublic(context.Background(), true, pg)
-	}
-	return ac.getStatusSimilar(fn, "public")
+	return ac.getStatusSimilar(ac.Client.GetTimelinePublic(context.Background(), true, pg))
 }
 
 func (ac *AccountClient) GetNotifications(nth []config.NotificationToHide, pg *mastodon.Pagination) ([]Item, error) {
@@ -134,17 +123,11 @@ func (ac *AccountClient) GetThread(status *mastodon.Status) ([]Item, error) {
 }
 
 func (ac *AccountClient) GetFavorites(pg *mastodon.Pagination) ([]Item, error) {
-	fn := func() ([]*mastodon.Status, error) {
-		return ac.Client.GetFavourites(context.Background(), pg)
-	}
-	return ac.getStatusSimilar(fn, "home")
+	return ac.getStatusSimilar(ac.Client.GetFavourites(context.Background(), pg))
 }
 
 func (ac *AccountClient) GetBookmarks(pg *mastodon.Pagination) ([]Item, error) {
-	fn := func() ([]*mastodon.Status, error) {
-		return ac.Client.GetBookmarks(context.Background(), pg)
-	}
-	return ac.getStatusSimilar(fn, "home")
+	return ac.getStatusSimilar(ac.Client.GetBookmarks(context.Background(), pg))
 }
 
 func (ac *AccountClient) GetConversations(pg *mastodon.Pagination) ([]Item, error) {
@@ -199,52 +182,38 @@ func (ac *AccountClient) GetUsers(search string) ([]Item, error) {
 }
 
 func (ac *AccountClient) GetBoostsStatus(pg *mastodon.Pagination, id mastodon.ID) ([]Item, error) {
-	fn := func() ([]*mastodon.Account, error) {
-		return ac.Client.GetRebloggedBy(context.Background(), id, pg)
-	}
-	return ac.getUserSimilar(fn, nil)
+	users, err := ac.Client.GetRebloggedBy(context.Background(), id, pg)
+	return ac.getUserSimilar(users, err, nil)
 }
 
 func (ac *AccountClient) GetFavoritesStatus(pg *mastodon.Pagination, id mastodon.ID) ([]Item, error) {
-	fn := func() ([]*mastodon.Account, error) {
-		return ac.Client.GetFavouritedBy(context.Background(), id, pg)
-	}
-	return ac.getUserSimilar(fn, nil)
+	users, err := ac.Client.GetFavouritedBy(context.Background(), id, pg)
+	return ac.getUserSimilar(users, err, nil)
 }
 
 func (ac *AccountClient) GetFollowers(pg *mastodon.Pagination, id mastodon.ID) ([]Item, error) {
-	fn := func() ([]*mastodon.Account, error) {
-		return ac.Client.GetAccountFollowers(context.Background(), id, pg)
-	}
-	return ac.getUserSimilar(fn, nil)
+	users, err := ac.Client.GetAccountFollowers(context.Background(), id, pg)
+	return ac.getUserSimilar(users, err, nil)
 }
 
 func (ac *AccountClient) GetFollowing(pg *mastodon.Pagination, id mastodon.ID) ([]Item, error) {
-	fn := func() ([]*mastodon.Account, error) {
-		return ac.Client.GetAccountFollowing(context.Background(), id, pg)
-	}
-	return ac.getUserSimilar(fn, nil)
+	users, err := ac.Client.GetAccountFollowing(context.Background(), id, pg)
+	return ac.getUserSimilar(users, err, nil)
 }
 
 func (ac *AccountClient) GetBlocking(pg *mastodon.Pagination) ([]Item, error) {
-	fn := func() ([]*mastodon.Account, error) {
-		return ac.Client.GetBlocks(context.Background(), pg)
-	}
-	return ac.getUserSimilar(fn, nil)
+	users, err := ac.Client.GetBlocks(context.Background(), pg)
+	return ac.getUserSimilar(users, err, nil)
 }
 
 func (ac *AccountClient) GetMuting(pg *mastodon.Pagination) ([]Item, error) {
-	fn := func() ([]*mastodon.Account, error) {
-		return ac.Client.GetMutes(context.Background(), pg)
-	}
-	return ac.getUserSimilar(fn, nil)
+	users, err := ac.Client.GetMutes(context.Background(), pg)
+	return ac.getUserSimilar(users, err, nil)
 }
 
 func (ac *AccountClient) GetFollowRequests(pg *mastodon.Pagination) ([]Item, error) {
-	fn := func() ([]*mastodon.Account, error) {
-		return ac.Client.GetFollowRequests(context.Background(), pg)
-	}
-	return ac.getUserSimilar(fn, nil)
+	users, err := ac.Client.GetFollowRequests(context.Background(), pg)
+	return ac.getUserSimilar(users, err, nil)
 }
 
 func (ac *AccountClient) GetUser(pg *mastodon.Pagination, id mastodon.ID) ([]Item, error) {
@@ -311,41 +280,32 @@ func (ac *AccountClient) GetListStatuses(pg *mastodon.Pagination, id mastodon.ID
 }
 
 func (ac *AccountClient) GetFollowingForList(pg *mastodon.Pagination, id mastodon.ID, data interface{}) ([]Item, error) {
-	fn := func() ([]*mastodon.Account, error) {
-		return ac.Client.GetAccountFollowing(context.Background(), id, pg)
-	}
-	return ac.getUserSimilar(fn, data)
+	users, err := ac.Client.GetAccountFollowing(context.Background(), id, pg)
+	return ac.getUserSimilar(users, err, data)
 }
 
 func (ac *AccountClient) GetListUsers(pg *mastodon.Pagination, id mastodon.ID, data interface{}) ([]Item, error) {
-	fn := func() ([]*mastodon.Account, error) {
-		return ac.Client.GetListAccounts(context.Background(), id)
-	}
-	return ac.getUserSimilar(fn, data)
+	users, err := ac.Client.GetListAccounts(context.Background(), id)
+	return ac.getUserSimilar(users, err, data)
 }
 
 func (ac *AccountClient) GetTag(pg *mastodon.Pagination, search string) ([]Item, error) {
-	fn := func() ([]*mastodon.Status, error) {
-		return ac.Client.GetTimelineHashtag(context.Background(), search, false, pg)
-	}
-	return ac.getStatusSimilar(fn, "public")
+	return ac.getStatusSimilar(ac.Client.GetTimelineHashtag(context.Background(), search, false, pg))
 }
 
 func (ac *AccountClient) GetTagMultiple(pg *mastodon.Pagination, search string) ([]Item, error) {
-	fn := func() ([]*mastodon.Status, error) {
-		var s string
-		td := mastodon.TagData{}
-		parts := strings.Split(search, " ")
-		for i, p := range parts {
-			if i == 0 {
-				s = p
-				continue
-			}
-			if len(p) > 0 {
-				td.Any = append(td.Any, p)
-			}
+	var s string
+	td := mastodon.TagData{}
+	parts := strings.Split(search, " ")
+	for i, p := range parts {
+		if i == 0 {
+			s = p
+			continue
 		}
-		return ac.Client.GetTimelineHashtagMultiple(context.Background(), s, false, &td, pg)
+		if len(p) > 0 {
+			td.Any = append(td.Any, p)
+		}
 	}
-	return ac.getStatusSimilar(fn, "public")
+	items, err := ac.Client.GetTimelineHashtagMultiple(context.Background(), s, false, &td, pg)
+	return ac.getStatusSimilar(items, err)
 }

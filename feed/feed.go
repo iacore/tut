@@ -748,7 +748,7 @@ func (f *Feed) startStream(rec *api.Receiver, timeline string, err error) {
 	}()
 }
 
-func (f *Feed) startStreamNotification(rec *api.Receiver, timeline string, err error, mentions bool) {
+func (f *Feed) startStreamNotification(rec *api.Receiver, err error, mentions bool) {
 	if err != nil {
 		log.Fatalln("Couldn't open stream")
 	}

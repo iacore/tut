@@ -231,7 +231,7 @@ func (tv *TutView) loggedIn(acc auth.Account) {
 	ac := &api.AccountClient{
 		Me:       me,
 		Client:   client,
-		Streams:  make(map[string]*api.Stream),
+		Streams:  make(map[api.StreamID]*api.Stream),
 		WSClient: client.NewWSClient(),
 	}
 	inst, err := ac.Client.GetInstanceV2(context.Background())

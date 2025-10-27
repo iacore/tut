@@ -5,3 +5,17 @@ Race conditions. Opening multiple threads in one panel might race condition and 
 kitty image protocol
 
 switch keymap to kakoune
+
+
+## stream refactor
+
+stream cached inside ac.Streams
+each stream can have multiple receivers
+receivers close themselves when dropped
+
+## feed refactor (feed/feed.go, ui/feed.go)
+
+desktop feed. based on streams.
+
+todo: turn the API from pull based to push based
+

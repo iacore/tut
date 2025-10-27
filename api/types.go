@@ -9,7 +9,7 @@ type RequestData struct {
 
 type AccountClient struct {
 	Client      *mastodon.Client
-	Streams     map[string]*Stream
+	Streams     map[StreamID]*Stream
 	Me          *mastodon.Account
 	WSClient    *mastodon.WSClient
 	InstanceOld *mastodon.Instance
