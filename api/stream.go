@@ -30,25 +30,13 @@ const (
 	ListStream
 )
 
-type StreamID string
+type StreamID struct {
+	Type   StreamType
+	Data string
+}
 
 func MakeStreamID(st StreamType, data string) StreamID {
-	switch st {
-	case HomeStream:
-		return "HomeStream"
-	case LocalStream:
-		return "LocalStream"
-	case FederatedStream:
-		return "FederatedStream"
-	case DirectStream:
-		return "DirectStream"
-	case TagStream:
-		return StreamID("TagStream" + data)
-	case ListStream:
-		return StreamID("ListStream" + data)
-	default:
-		panic("invalid StreamType")
-	}
+	return StreamID{st, data}
 }
 
 type Receiver func(mastodon.Event) // always use *Receiver, because == comparison need it
@@ -104,7 +92,7 @@ func newStream(ctx context.Context, id StreamID, input chan mastodon.Event) *Str
 	stream := &Stream{
 		id:       id,
 		incoming: input,
-		cancel: cancel,
+		cancel:   cancel,
 	}
 	go stream.listen(ctx)
 	return stream
@@ -120,30 +108,34 @@ func (ac *AccountClient) CreateOrGetStream(ctx context.Context, st StreamType, d
 		}
 	}
 
-	// create steram
-	var ch chan mastodon.Event
-	switch st {
-	case HomeStream:
-		ch, err = ac.WSClient.StreamingWSUser(ctx)
-	case LocalStream:
-		ch, err = ac.WSClient.StreamingWSPublic(ctx, true)
-	case FederatedStream:
-		ch, err = ac.WSClient.StreamingWSPublic(ctx, false)
-	case DirectStream:
-		ch, err = ac.WSClient.StreamingWSDirect(ctx)
-	case TagStream:
-		ch, err = ac.WSClient.StreamingWSHashtag(ctx, data, false)
-	case ListStream:
-		ch, err = ac.WSClient.StreamingWSList(ctx, mastodon.ID(data))
-	default:
-		panic("invalid StreamType")
-	}
+	// create stream
+	ch, err := ac.StreamIDtoWebSocketStream(ctx, id)
 	if err != nil {
 		return nil, err
 	}
 	stream = newStream(ctx, id, ch)
 	ac.Streams[stream.ID()] = stream
 	return stream, nil
+}
+
+// create mastodon.Event stream channel
+func (ac *AccountClient) StreamIDtoWebSocketStream(ctx context.Context, id StreamID) (chan mastodon.Event, error) {
+	switch id.Type {
+	case HomeStream:
+		return ac.WSClient.StreamingWSUser(ctx)
+	case LocalStream:
+		return ac.WSClient.StreamingWSPublic(ctx, true)
+	case FederatedStream:
+		return ac.WSClient.StreamingWSPublic(ctx, false)
+	case DirectStream:
+		return ac.WSClient.StreamingWSDirect(ctx)
+	case TagStream:
+		return ac.WSClient.StreamingWSHashtag(ctx, id.Data, false)
+	case ListStream:
+		return ac.WSClient.StreamingWSList(ctx, mastodon.ID(id.Data))
+	default:
+		panic("invalid StreamType")
+	}
 }
 
 func (ac *AccountClient) RemoveReceiver(rec *Receiver, st StreamType, data string) {
@@ -160,27 +152,3 @@ func (ac *AccountClient) RemoveReceiver(rec *Receiver, st StreamType, data strin
 	}
 	stream.mux.Unlock()
 }
-
-// func (ac *AccountClient) RemoveHomeReceiver(rec *Receiver) {
-// 	ac.RemoveGenericReceiver(rec, HomeStream, "")
-// }
-
-// func (ac *AccountClient) RemoveLocalReceiver(rec *Receiver) {
-// 	ac.RemoveGenericReceiver(rec, LocalStream, "")
-// }
-
-// func (ac *AccountClient) RemoveConversationReceiver(rec *Receiver) {
-// 	ac.RemoveGenericReceiver(rec, DirectStream, "")
-// }
-
-// func (ac *AccountClient) RemoveFederatedReceiver(rec *Receiver) {
-// 	ac.RemoveGenericReceiver(rec, FederatedStream, "")
-// }
-
-// func (ac *AccountClient) RemoveListReceiver(rec *Receiver, id mastodon.ID) {
-// 	ac.RemoveGenericReceiver(rec, ListStream, string(id))
-// }
-
-// func (ac *AccountClient) RemoveTagReceiver(rec *Receiver, tag string) {
-// 	ac.RemoveGenericReceiver(rec, TagStream, tag)
-// }
