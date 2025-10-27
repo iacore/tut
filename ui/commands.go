@@ -302,12 +302,12 @@ func (tv *TutView) PreferencesCommand() {
 
 func (tv *TutView) ListPlacementCommand(lp config.ListPlacement) {
 	tv.tut.Config.General.ListPlacement = lp
-	tv.MainView.be_ForceUpdate(tv)
+	tv.MainView.Be_ForceUpdate(tv)
 }
 
 func (tv *TutView) ListSplitCommand(ls config.ListSplit) {
 	tv.tut.Config.General.ListSplit = ls
-	tv.MainView.be_ForceUpdate(tv)
+	tv.MainView.Be_ForceUpdate(tv)
 }
 
 func (tv *TutView) ProportionsCommand(lp string, cp string) {
@@ -323,7 +323,7 @@ func (tv *TutView) ProportionsCommand(lp string, cp string) {
 	}
 	tv.tut.Config.General.ListProportion = lpi
 	tv.tut.Config.General.ContentProportion = cpi
-	tv.MainView.be_ForceUpdate(tv)
+	tv.MainView.Be_ForceUpdate(tv)
 }
 
 func (tv *TutView) LoadNewerCommand() {

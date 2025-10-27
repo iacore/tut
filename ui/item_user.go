@@ -109,9 +109,10 @@ func drawUser(tv *TutView, data *api.User, main *tview.TextView, controls *tview
 	controlItems = append(controlItems, NewControl(tv.tut.Config, tv.tut.Config.Input.UserYank, true))
 
 	// Clear controls and only have add and delete for lists.
-	if ut == InputUserListAdd {
+	switch ut {
+	case InputUserListAdd:
 		controlItems = []Control{NewControl(tv.tut.Config, tv.tut.Config.Input.ListUserAdd, true)}
-	} else if ut == InputUserListDelete {
+	case InputUserListDelete:
 		controlItems = []Control{NewControl(tv.tut.Config, tv.tut.Config.Input.ListUserDelete, true)}
 	}
 

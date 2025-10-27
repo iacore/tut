@@ -107,7 +107,7 @@ func DrawItem(tv *TutView, item api.Item, main *tview.TextView, controls *tview.
 			drawUser(tv, item.Raw().(*api.User), main, controls, "", InputUserNormal)
 		}
 	case api.NotificationType:
-		drawNotification(tv, item, item.Raw().(*api.NotificationData), main, controls)
+		drawNotification(tv, item.Raw().(*api.NotificationData), main, controls)
 	case api.ListsType:
 		drawList(tv, item.Raw().(*mastodon.List), main, controls)
 	case api.TagType:
@@ -139,7 +139,7 @@ func DrawItemControls(tv *TutView, item api.Item, controls *tview.Flex, ft confi
 			drawUser(tv, item.Raw().(*api.User), nil, controls, "", InputUserNormal)
 		}
 	case api.NotificationType:
-		drawNotification(tv, item, item.Raw().(*api.NotificationData), nil, controls)
+		drawNotification(tv, item.Raw().(*api.NotificationData), nil, controls)
 	case api.ListsType:
 		drawList(tv, item.Raw().(*mastodon.List), nil, controls)
 	case api.TagType:

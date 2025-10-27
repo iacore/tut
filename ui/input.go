@@ -277,7 +277,8 @@ func (tv *TutView) InputMainViewFeed(event *tcell.EventKey) *tcell.EventKey {
 	if tv.tut.Config.Input.GlobalExit.Match(event.Key(), event.Rune()) {
 		exiting := tv.Timeline.RemoveCurrent(false)
 		if exiting && tv.Timeline.FeedFocusIndex == 0 {
-			tv.ModalView.Run("Do you want to exit tut?",
+			tv.ModalView.Be_OpenConfirm(tv,
+				"Do you want to exit tut?",
 				func() {
 					tv.Timeline.RemoveCurrent(true)
 				})
@@ -447,7 +448,8 @@ func (tv *TutView) InputStatus(event *tcell.EventKey, item api.Item, status *mas
 		if boosted {
 			txt = "unboost"
 		}
-		tv.ModalView.Run(
+		tv.ModalView.Be_OpenConfirm(tv,
+
 			fmt.Sprintf("Do you want to %s this toot?", txt), func() {
 				ns, err := tv.tut.Client.BoostToggle(status)
 				if err != nil {
@@ -465,23 +467,24 @@ func (tv *TutView) InputStatus(event *tcell.EventKey, item api.Item, status *mas
 		if !isMine {
 			return nil
 		}
-		tv.ModalView.Run("Do you want to delete this toot?", func() {
-			err := tv.tut.Client.DeleteStatus(sr)
-			if err != nil {
-				tv.ShowError(
-					fmt.Sprintf("Couldn't delete toot. Error: %v\n", err),
-				)
-				return
-			}
-			status.Card = nil
-			status.Sensitive = false
-			status.SpoilerText = ""
-			status.Favourited = false
-			status.MediaAttachments = nil
-			status.Reblogged = false
-			status.Content = "Deleted"
-			tv.RedrawContent()
-		})
+		tv.ModalView.Be_OpenConfirm(tv,
+			"Do you want to delete this toot?", func() {
+				err := tv.tut.Client.DeleteStatus(sr)
+				if err != nil {
+					tv.ShowError(
+						fmt.Sprintf("Couldn't delete toot. Error: %v\n", err),
+					)
+					return
+				}
+				status.Card = nil
+				status.Sensitive = false
+				status.SpoilerText = ""
+				status.Favourited = false
+				status.MediaAttachments = nil
+				status.Reblogged = false
+				status.Content = "Deleted"
+				tv.RedrawContent()
+			})
 		return nil
 	}
 	if tv.tut.Config.Input.StatusEdit.Match(event.Key(), event.Rune()) {
@@ -493,7 +496,8 @@ func (tv *TutView) InputStatus(event *tcell.EventKey, item api.Item, status *mas
 		if favorited {
 			txt = "unfavorite"
 		}
-		tv.ModalView.Run(fmt.Sprintf("Do you want to %s this toot?", txt),
+		tv.ModalView.Be_OpenConfirm(tv,
+			fmt.Sprintf("Do you want to %s this toot?", txt),
 			func() {
 				ns, err := tv.tut.Client.FavoriteToogle(status)
 				if err != nil {
@@ -534,7 +538,8 @@ func (tv *TutView) InputStatus(event *tcell.EventKey, item api.Item, status *mas
 		if bookmarked {
 			txt = "unsave"
 		}
-		tv.ModalView.Run(fmt.Sprintf("Do you want to %s this toot?", txt),
+		tv.ModalView.Be_OpenConfirm(tv,
+			fmt.Sprintf("Do you want to %s this toot?", txt),
 			func() {
 				ns, err := tv.tut.Client.BookmarkToogle(status)
 				if err != nil {
@@ -700,7 +705,8 @@ func (tv *TutView) InputUser(event *tcell.EventKey, user *api.User, ut InputUser
 	}
 
 	if ut == InputUserFollowRequest && tv.tut.Config.Input.UserFollowRequestDecide.Match(event.Key(), event.Rune()) {
-		tv.ModalView.RunDecide("Do you want accept the follow request?",
+		tv.ModalView.Be_Open(tv,
+			"Do you want accept the follow request?",
 			func() {
 				err := tv.tut.Client.FollowRequestAccept(user.Data)
 				if err != nil {
@@ -736,7 +742,8 @@ func (tv *TutView) InputUser(event *tcell.EventKey, user *api.User, ut InputUser
 		if blocking {
 			txt = "unblock"
 		}
-		tv.ModalView.Run(fmt.Sprintf("Do you want to %s this user?", txt),
+		tv.ModalView.Be_OpenConfirm(tv,
+			fmt.Sprintf("Do you want to %s this user?", txt),
 			func() {
 				rel, err := tv.tut.Client.BlockToggle(user)
 				if err != nil {
@@ -755,7 +762,8 @@ func (tv *TutView) InputUser(event *tcell.EventKey, user *api.User, ut InputUser
 		if following {
 			txt = "unfollow"
 		}
-		tv.ModalView.Run(fmt.Sprintf("Do you want to %s this user?", txt),
+		tv.ModalView.Be_OpenConfirm(tv,
+			fmt.Sprintf("Do you want to %s this user?", txt),
 			func() {
 				rel, err := tv.tut.Client.FollowToggle(user)
 				if err != nil {
@@ -774,7 +782,8 @@ func (tv *TutView) InputUser(event *tcell.EventKey, user *api.User, ut InputUser
 		if muting {
 			txt = "unmute"
 		}
-		tv.ModalView.Run(fmt.Sprintf("Do you want to %s this user?", txt),
+		tv.ModalView.Be_OpenConfirm(tv,
+			fmt.Sprintf("Do you want to %s this user?", txt),
 			func() {
 				rel, err := tv.tut.Client.MuteToggle(user)
 				if err != nil {
@@ -852,7 +861,8 @@ func (tv *TutView) InputTag(event *tcell.EventKey, tag *mastodon.Tag) *tcell.Eve
 		if tag.Following != nil && tag.Following == true {
 			txt = "unfollow"
 		}
-		tv.ModalView.Run(fmt.Sprintf("Do you want to %s #%s?", txt, tag.Name),
+		tv.ModalView.Be_OpenConfirm(tv,
+			fmt.Sprintf("Do you want to %s #%s?", txt, tag.Name),
 			func() {
 				nt, err := tv.tut.Client.TagToggleFollow(tag)
 				if err != nil {
@@ -948,7 +958,8 @@ func (tv *TutView) InputComposeView(event *tcell.EventKey) *tcell.EventKey {
 	}
 	if tv.tut.Config.Input.GlobalBack.Match(event.Key(), event.Rune()) ||
 		tv.tut.Config.Input.GlobalExit.Match(event.Key(), event.Rune()) {
-		tv.ModalView.Run(
+		tv.ModalView.Be_OpenConfirm(tv,
+
 			"Do you want exit the compose view?", func() {
 				tv.FocusMainNoHistory()
 			})
@@ -1102,7 +1113,8 @@ func (tv *TutView) InputPreference(event *tcell.EventKey) *tcell.EventKey {
 	}
 	if tv.tut.Config.Input.GlobalBack.Match(event.Key(), event.Rune()) ||
 		tv.tut.Config.Input.GlobalExit.Match(event.Key(), event.Rune()) {
-		tv.ModalView.Run(
+		tv.ModalView.Be_OpenConfirm(tv,
+
 			"Do you want exit the preference view?", func() {
 				tv.FocusMainNoHistory()
 			})

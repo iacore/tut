@@ -10,21 +10,21 @@ import (
 
 type MainView struct {
 	phony.Inbox
-	tv *TutView
+	tv      *TutView
 	View    *tview.Flex
 	accView *tview.Flex
 }
 
 func NewMainView(tv *TutView) *MainView {
 	mv := &MainView{
-		tv: tv,
+		tv:      tv,
 		accView: NewControlView(tv.tut.Config),
 	}
 	mv.View = mv.mainViewUI(tv)
 	return mv
 }
 
-func (mv *MainView) be_ForceUpdate(from phony.Actor) {
+func (mv *MainView) Be_ForceUpdate(from phony.Actor) {
 	mv.Act(from, func() {
 		tv := mv.tv
 		tv.tut.App.QueueUpdateDraw(func() {
@@ -109,19 +109,20 @@ func (mv *MainView) mainViewUI(tv *TutView) *tview.Flex {
 	if tv.tut.Config.General.TerminalTitle < 2 {
 		r.AddItem(tv.Shared.Top.View, 1, 0, false)
 	}
-	if tv.tut.Config.General.ListPlacement == config.ListPlacementTop {
+	switch tv.tut.Config.General.ListPlacement {
+	case config.ListPlacementTop:
 		r.AddItem(list, 0, lp, false).
 			AddItem(hl, 1, 0, false).
 			AddItem(content, 0, cp, false).
 			AddItem(controls, 1, 0, false).
 			AddItem(tv.Shared.Bottom.View, 2, 0, false)
-	} else if tv.tut.Config.General.ListPlacement == config.ListPlacementBottom {
+	case config.ListPlacementBottom:
 		r.AddItem(content, 0, cp, false).
 			AddItem(controls, 1, 0, false).
 			AddItem(hl, 1, 0, false).
 			AddItem(list, 0, lp, false).
 			AddItem(tv.Shared.Bottom.View, 2, 0, false)
-	} else if tv.tut.Config.General.ListPlacement == config.ListPlacementLeft {
+	case config.ListPlacementLeft:
 		r.AddItem(tview.NewFlex().SetDirection(tview.FlexColumn).
 			AddItem(list, 0, lp, false).
 			AddItem(vl, 1, 0, false).
@@ -129,7 +130,7 @@ func (mv *MainView) mainViewUI(tv *TutView) *tview.Flex {
 				AddItem(content, 0, 1, false).
 				AddItem(controls, 1, 0, false), 0, cp, false), 0, 1, false).
 			AddItem(tv.Shared.Bottom.View, 2, 0, false)
-	} else if tv.tut.Config.General.ListPlacement == config.ListPlacementRight {
+	case config.ListPlacementRight:
 		r.AddItem(tview.NewFlex().SetDirection(tview.FlexColumn).
 			AddItem(tview.NewFlex().SetDirection(tview.FlexRow).
 				AddItem(content, 0, 1, false).

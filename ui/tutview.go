@@ -179,7 +179,7 @@ func (tvh *TutViewsHolder) SetFocusedTutView(index int) {
 		App.SetMouseCapture(curr.MouseInput)
 	}
 	if curr.MainView != nil {
-		curr.MainView.be_ForceUpdate(curr)
+		curr.MainView.Be_ForceUpdate(curr)
 	}
 }
 
@@ -295,7 +295,7 @@ func (tv *TutView) FocusFeed(index int, ct *config.Timeline) {
 		}
 	}
 	tv.Shared.Top.SetText(tv.Timeline.GetTitle())
-	tv.MainView.be_ForceUpdate(tv)
+	tv.MainView.Be_ForceUpdate(tv)
 }
 
 func (tv *TutView) NextFeed() {

@@ -161,7 +161,7 @@ func (tl *Timeline) AddFeed(f *Feed, newPane bool) {
 		fh.FeedIndex = fh.FeedIndex + 1
 	}
 	tl.tutView.Shared.Top.SetText(tl.GetTitle())
-	tl.tutView.MainView.be_ForceUpdate(tl.tutView)
+	tl.tutView.MainView.Be_ForceUpdate(tl.tutView)
 }
 
 func (tl *Timeline) RemoveCurrent(quit bool) bool {
@@ -182,7 +182,7 @@ func (tl *Timeline) RemoveCurrent(quit bool) bool {
 	}
 	f.FeedIndex = ni
 	tl.tutView.Shared.Top.SetText(tl.GetTitle())
-	tl.tutView.MainView.be_ForceUpdate(tl.tutView)
+	tl.tutView.MainView.Be_ForceUpdate(tl.tutView)
 	return false
 }
 
@@ -257,7 +257,7 @@ func (tl *Timeline) NextFeed() {
 	}
 	f.FeedIndex = ni
 	tl.tutView.Shared.Top.SetText(tl.GetTitle())
-	tl.tutView.MainView.be_ForceUpdate(tl.tutView)
+	tl.tutView.MainView.Be_ForceUpdate(tl.tutView)
 }
 
 func (tl *Timeline) PrevFeed() {
@@ -268,7 +268,7 @@ func (tl *Timeline) PrevFeed() {
 	}
 	f.FeedIndex = ni
 	tl.tutView.Shared.Top.SetText(tl.GetTitle())
-	tl.tutView.MainView.be_ForceUpdate(tl.tutView)
+	tl.tutView.MainView.Be_ForceUpdate(tl.tutView)
 }
 
 func (tl *Timeline) FindAndGoTo(ft config.FeedType, data string, hideBoosts, hideReplies bool) bool {
@@ -281,7 +281,7 @@ func (tl *Timeline) FindAndGoTo(ft config.FeedType, data string, hideBoosts, hid
 				tl.tutView.FocusFeed(i, nil)
 				fh.FeedIndex = j
 				tl.tutView.Shared.Top.SetText(tl.GetTitle())
-				tl.tutView.MainView.be_ForceUpdate(tl.tutView)
+				tl.tutView.MainView.Be_ForceUpdate(tl.tutView)
 				return true
 			}
 		}
