@@ -187,7 +187,7 @@ func NewNotificationFeed(tv *TutView, tl *config.Timeline) *Feed {
 }
 
 func NewNotificatioMentionsFeed(tv *TutView, tl *config.Timeline) *Feed {
-	f := feed.NewNotificationsMentions(tv.tut.Client, tv.tut.Config)
+	f := feed.NewNotificationsMentions(tv.tut.Client, tv.tut.Config, false, false)
 	f.LoadNewer()
 	fd := &Feed{
 		tutView:  tv,
@@ -246,7 +246,7 @@ func NewHistoryFeed(tv *TutView, item api.Item, tl *config.Timeline) *Feed {
 }
 
 func NewConversationsFeed(tv *TutView, tl *config.Timeline) *Feed {
-	f := feed.NewConversations(tv.tut.Client, tv.tut.Config)
+	f := feed.NewConversations(tv.tut.Client, tv.tut.Config, false, false)
 	f.LoadNewer()
 	fd := &Feed{
 		tutView:  tv,

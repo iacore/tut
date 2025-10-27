@@ -6,6 +6,7 @@ import (
 	"slices"
 	"sync"
 
+	"github.com/Arceliar/phony"
 	"github.com/RasmusLindroth/go-mastodon"
 )
 
@@ -41,14 +42,15 @@ func MakeStreamID(st StreamType, data string) StreamID {
 	return StreamID{st, data}
 }
 
-type Receiver struct {
+type Listener struct {
 	StreamID StreamID
-	OnEvent  func(mastodon.Event) // always use *Receiver, because == comparison need it
+	OnEvent  func(from phony.Actor, e mastodon.Event) // always use *Receiver, because == comparison need it
 }
 
 type Stream struct {
+	phony.Inbox
 	id        StreamID
-	receivers []*Receiver
+	receivers []*Listener
 	incoming  chan mastodon.Event
 	cancel    context.CancelFunc
 	mux       sync.Mutex
@@ -58,7 +60,7 @@ func (s *Stream) ID() StreamID {
 	return s.id
 }
 
-func (s *Stream) AddReceiver(r *Receiver) {
+func (s *Stream) AddReceiver(r *Listener) {
 	if r.StreamID != s.id {
 		log.Fatalf("StreamID mismatch: %v != %v", r.StreamID, s.id)
 	}
@@ -66,7 +68,7 @@ func (s *Stream) AddReceiver(r *Receiver) {
 	s.receivers = append(s.receivers, r)
 }
 
-func (s *Stream) RemoveReceiver(r *Receiver) {
+func (s *Stream) RemoveReceiver(r *Listener) {
 	if r.StreamID != s.id {
 		log.Fatalf("StreamID mismatch: %v != %v", r.StreamID, s.id)
 	}
@@ -89,7 +91,7 @@ func (s *Stream) listen(ctx context.Context) {
 			switch e.(type) {
 			case *mastodon.UpdateEvent, *mastodon.ConversationEvent, *mastodon.NotificationEvent, *mastodon.DeleteEvent, *mastodon.ErrorEvent:
 				for _, r := range s.receivers {
-					r.OnEvent(e)
+					r.OnEvent(s, e)
 				}
 			}
 		}
@@ -145,7 +147,7 @@ func (ac *AccountClient) streamIDtoWebSocketStream(ctx context.Context, id Strea
 	}
 }
 
-func (ac *AccountClient) AddReceiver(r *Receiver) error {
+func (ac *AccountClient) AddListener(r *Listener) error {
 	stream, err := ac.openOrCreateStream(context.Background(), r.StreamID)
 	if err != nil {
 		return err
@@ -154,7 +156,7 @@ func (ac *AccountClient) AddReceiver(r *Receiver) error {
 	return nil
 }
 
-func (ac *AccountClient) RemoveReceiver(r *Receiver) {
+func (ac *AccountClient) RemoveListener(r *Listener) {
 	id := r.StreamID
 	stream, ok := ac.Streams[id]
 	if !ok {

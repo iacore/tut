@@ -701,7 +701,7 @@ func parseStyle(cfg StyleTOML, cnfPath string, cnfDir string) Style {
 		}
 	}
 
-	style := Style{}
+	var style Style
 	theme := NilDefaultString(cfg.Theme, def.Theme)
 	if theme != "none" && theme != "" {
 		bundled, local, err := getThemes(cnfPath, cnfDir)
@@ -1206,9 +1206,7 @@ func parseTemplates(cfg ConfigTOML, cnfPath string, cnfDir string) Templates {
 	var tootTmpl *template.Template
 	tootTmplPath, exists, err := checkConfig("toot.tmpl", cnfPath, cnfDir)
 	if err != nil {
-		log.Fatalf(
-			fmt.Sprintf("Couldn't access toot.tmpl. Error: %v", err),
-		)
+		log.Fatalf("Couldn't access toot.tmpl. Error: %v", err)
 	}
 	if exists {
 		tootTmpl, err = template.New("toot.tmpl").Funcs(template.FuncMap{
@@ -1228,9 +1226,7 @@ func parseTemplates(cfg ConfigTOML, cnfPath string, cnfDir string) Templates {
 	var userTmpl *template.Template
 	userTmplPath, exists, err := checkConfig("user.tmpl", cnfPath, cnfDir)
 	if err != nil {
-		log.Fatalf(
-			fmt.Sprintf("Couldn't access user.tmpl. Error: %v", err),
-		)
+		log.Fatalf("Couldn't access user.tmpl. Error: %v", err)
 	}
 	if exists {
 		userTmpl, err = template.New("user.tmpl").Funcs(template.FuncMap{
@@ -1433,8 +1429,6 @@ func checkConfig(filename string, cnfPath string, cnfDir string) (path string, e
 		p := filepath.Join(cnfDir, filename)
 		if os.IsNotExist(err) {
 			return p, false, nil
-		} else if err != nil {
-			return p, true, err
 		}
 		return p, true, err
 	}
@@ -1534,9 +1528,6 @@ func getTheme(fname string, isLocal bool, cnfDir string) (StyleTOML, error) {
 	}
 	var style StyleTOML
 	toml.NewDecoder(f).Decode(&style)
-	if err != nil {
-		return style, err
-	}
 	switch x := f.(type) {
 	case *os.File:
 		x.Close()
