@@ -8,27 +8,27 @@ import (
 	"github.com/RasmusLindroth/tut/config"
 )
 
-func SendDesktopNotification(config config.Notification, nft DesktopNotification) {
-	switch nft.Type {
+func SendDesktopNotification(config config.Notification, notif DesktopNotification) {
+	switch notif.Type {
 	case DesktopNotificationFollower:
 		if config.NotificationFollower {
-			beeep.Notify(fmt.Sprintf("%s follows you", nft.Data), "", "")
+			beeep.Notify(fmt.Sprintf("%s follows you", notif.Data), "", "")
 		}
 	case DesktopNotificationFavorite:
 		if config.NotificationFavorite {
-			beeep.Notify(fmt.Sprintf("%s favorited your toot", nft.Data), "", "")
+			beeep.Notify(fmt.Sprintf("%s favorited your toot", notif.Data), "", "")
 		}
 	case DesktopNotificationMention:
 		if config.NotificationMention {
-			beeep.Notify(fmt.Sprintf("%s mentioned you", nft.Data), "", "")
+			beeep.Notify(fmt.Sprintf("%s mentioned you", notif.Data), "", "")
 		}
 	case DesktopNotificationUpdate:
 		if config.NotificationUpdate {
-			beeep.Notify(fmt.Sprintf("%s changed their toot", nft.Data), "", "")
+			beeep.Notify(fmt.Sprintf("%s changed their toot", notif.Data), "", "")
 		}
 	case DesktopNotificationBoost:
 		if config.NotificationBoost {
-			beeep.Notify(fmt.Sprintf("%s boosted your toot", nft.Data), "", "")
+			beeep.Notify(fmt.Sprintf("%s boosted your toot", notif.Data), "", "")
 		}
 	case DesktopNotificationPoll:
 		if config.NotificationPoll {

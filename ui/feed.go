@@ -4,14 +4,15 @@ import (
 	"fmt"
 	"strconv"
 
+	"github.com/Arceliar/phony"
 	"github.com/RasmusLindroth/go-mastodon"
+	"github.com/gdamore/tcell/v2"
+	"github.com/rivo/tview"
+	
 	"github.com/RasmusLindroth/tut/api"
 	"github.com/RasmusLindroth/tut/config"
 	"github.com/RasmusLindroth/tut/feed"
 	"github.com/RasmusLindroth/tut/util"
-	"github.com/gdamore/tcell/v2"
-	
-	"github.com/rivo/tview"
 )
 
 type FeedList struct {
@@ -88,7 +89,7 @@ func (f *Feed) DrawContent() {
 }
 
 func (f *Feed) update() {
-	for nft := range f.Data.Update {
+	f.Data.OnUpdate = func(from phony.Actor, nft feed.DesktopNotification) {
 		feed.SendDesktopNotification(f.tutView.tut.Config.NotificationConfig, nft)
 		f.tutView.tut.App.QueueUpdateDraw(func() {
 			lLen := f.List.GetItemCount()

@@ -49,8 +49,11 @@ type DesktopNotification struct {
 	Data string
 }
 
+type FeedUpdateFunc = func(from phony.Actor, notif DesktopNotification)
+
 type Feed struct {
 	phony.Inbox
+	OnUpdate      FeedUpdateFunc
 	accountClient *api.AccountClient
 	config        *config.Config
 	feedType      config.FeedType
@@ -61,7 +64,6 @@ type Feed struct {
 	loadingOlder  *LoadingLock
 	loadNewer     func(*Feed)
 	loadOlder     func(*Feed)
-	Update        chan DesktopNotification
 	apiData       *api.RequestData
 	apiDataMux    sync.Mutex
 	receivers     []*api.Listener
@@ -115,14 +117,14 @@ func (f *Feed) Delete(id uint) {
 		}
 	}
 	f.items = items
-	f.Updated(DesktopNotification{Type: DesktopNotificationNone})
+	f.OnUpdate(f, DesktopNotification{Type: DesktopNotificationNone})
 }
 
 func (f *Feed) Clear() {
 	f.itemsMux.Lock()
 	defer f.itemsMux.Unlock()
 	f.items = []api.Item{}
-	f.Updated(DesktopNotification{Type: DesktopNotificationNone})
+	f.OnUpdate(f, DesktopNotification{Type: DesktopNotificationNone})
 }
 
 func (f *Feed) Item(index int) (api.Item, error) {
@@ -143,13 +145,6 @@ func (f *Feed) Item(index int) (api.Item, error) {
 	return filtered[index], nil
 }
 
-func (f *Feed) Updated(nt DesktopNotification) {
-	if len(f.Update) > 0 {
-		return
-	}
-	f.Update <- nt
-}
-
 func (f *Feed) LoadNewer() {
 	if f.loadNewer == nil {
 		return
@@ -163,7 +158,7 @@ func (f *Feed) LoadNewer() {
 		return
 	}
 	f.loadNewer(f)
-	f.Updated(DesktopNotification{Type: DesktopNotificationNone})
+	f.OnUpdate(f, DesktopNotification{Type: DesktopNotificationNone})
 	f.loadingNewer.last = time.Now()
 	f.loadingNewer.mux.Unlock()
 }
@@ -181,7 +176,7 @@ func (f *Feed) LoadOlder() {
 		return
 	}
 	f.loadOlder(f)
-	f.Updated(DesktopNotification{Type: DesktopNotificationNone})
+	f.OnUpdate(f, DesktopNotification{Type: DesktopNotificationNone})
 	f.loadingOlder.last = time.Now()
 	f.loadingOlder.mux.Unlock()
 }
@@ -206,7 +201,7 @@ func (f *Feed) singleNewerSearch(fn apiSearchFunc, search string) {
 	f.itemsMux.Lock()
 	if len(items) > 0 {
 		f.items = append(items, f.items...)
-		f.Updated(DesktopNotification{Type: DesktopNotificationNone})
+		f.OnUpdate(f, DesktopNotification{Type: DesktopNotificationNone})
 	}
 	f.itemsMux.Unlock()
 }
@@ -219,7 +214,7 @@ func (f *Feed) singleThread(fn apiThreadFunc, status *mastodon.Status) {
 	f.itemsMux.Lock()
 	if len(items) > 0 {
 		f.items = append(items, f.items...)
-		f.Updated(DesktopNotification{Type: DesktopNotificationNone})
+		f.OnUpdate(f, DesktopNotification{Type: DesktopNotificationNone})
 	}
 	f.itemsMux.Unlock()
 }
@@ -232,7 +227,7 @@ func (f *Feed) singleHistory(fn apiHistoryFunc, status *mastodon.Status) {
 	f.itemsMux.Lock()
 	if len(items) > 0 {
 		f.items = append(items, f.items...)
-		f.Updated(DesktopNotification{Type: DesktopNotificationNone})
+		f.OnUpdate(f, DesktopNotification{Type: DesktopNotificationNone})
 	}
 	f.itemsMux.Unlock()
 }
@@ -265,7 +260,7 @@ func (f *Feed) normalNewer(fn apiFunc) {
 			}
 		}
 		f.items = append(items, f.items...)
-		f.Updated(DesktopNotification{Type: DesktopNotificationNone})
+		f.OnUpdate(f, DesktopNotification{Type: DesktopNotificationNone})
 	}
 	f.itemsMux.Unlock()
 	f.apiDataMux.Unlock()
@@ -294,7 +289,7 @@ func (f *Feed) normalOlder(fn apiFunc) {
 			f.apiData.MaxID = item.Item.ID
 		}
 		f.items = append(f.items, items...)
-		f.Updated(DesktopNotification{Type: DesktopNotificationNone})
+		f.OnUpdate(f, DesktopNotification{Type: DesktopNotificationNone})
 	}
 	f.itemsMux.Unlock()
 	f.apiDataMux.Unlock()
@@ -328,7 +323,7 @@ func (f *Feed) normalNewerNotification(fn apiFuncNotification, nth []config.Noti
 			}
 		}
 		f.items = append(items, f.items...)
-		f.Updated(DesktopNotification{Type: DesktopNotificationNone})
+		f.OnUpdate(f, DesktopNotification{Type: DesktopNotificationNone})
 	}
 	f.itemsMux.Unlock()
 	f.apiDataMux.Unlock()
@@ -357,7 +352,7 @@ func (f *Feed) normalOlderNotification(fn apiFuncNotification, nth []config.Noti
 			f.apiData.MaxID = item.Item.ID
 		}
 		f.items = append(f.items, items...)
-		f.Updated(DesktopNotification{Type: DesktopNotificationNone})
+		f.OnUpdate(f, DesktopNotification{Type: DesktopNotificationNone})
 	}
 	f.itemsMux.Unlock()
 	f.apiDataMux.Unlock()
@@ -379,7 +374,7 @@ func (f *Feed) newerSearchPG(fn apiSearchPGFunc, search string) {
 		item := items[0].Raw().(*mastodon.Status)
 		f.apiData.MinID = item.ID
 		f.items = append(items, f.items...)
-		f.Updated(DesktopNotification{Type: DesktopNotificationNone})
+		f.OnUpdate(f, DesktopNotification{Type: DesktopNotificationNone})
 		if f.apiData.MaxID == mastodon.ID("") {
 			item = items[len(items)-1].Raw().(*mastodon.Status)
 			f.apiData.MaxID = item.ID
@@ -408,7 +403,7 @@ func (f *Feed) olderSearchPG(fn apiSearchPGFunc, search string) {
 		item := items[len(items)-1].Raw().(*mastodon.Status)
 		f.apiData.MaxID = item.ID
 		f.items = append(f.items, items...)
-		f.Updated(DesktopNotification{Type: DesktopNotificationNone})
+		f.OnUpdate(f, DesktopNotification{Type: DesktopNotificationNone})
 	}
 	f.itemsMux.Unlock()
 	f.apiDataMux.Unlock()
@@ -430,7 +425,7 @@ func (f *Feed) normalNewerUser(fn apiIDFunc, id mastodon.ID) {
 		item := items[0].Raw().(*mastodon.Status)
 		f.apiData.MinID = item.ID
 		f.items = append(items, f.items...)
-		f.Updated(DesktopNotification{Type: DesktopNotificationNone})
+		f.OnUpdate(f, DesktopNotification{Type: DesktopNotificationNone})
 		if f.apiData.MaxID == mastodon.ID("") {
 			item = items[len(items)-1].Raw().(*mastodon.Status)
 			f.apiData.MaxID = item.ID
@@ -459,7 +454,7 @@ func (f *Feed) normalOlderUser(fn apiIDFunc, id mastodon.ID) {
 		item := items[len(items)-1].Raw().(*mastodon.Status)
 		f.apiData.MaxID = item.ID
 		f.items = append(f.items, items...)
-		f.Updated(DesktopNotification{Type: DesktopNotificationNone})
+		f.OnUpdate(f, DesktopNotification{Type: DesktopNotificationNone})
 	}
 	f.itemsMux.Unlock()
 	f.apiDataMux.Unlock()
@@ -481,7 +476,7 @@ func (f *Feed) normalNewerID(fn apiIDFunc, id mastodon.ID) {
 		item := items[0].Raw().(*mastodon.Status)
 		f.apiData.MinID = item.ID
 		f.items = append(items, f.items...)
-		f.Updated(DesktopNotification{Type: DesktopNotificationNone})
+		f.OnUpdate(f, DesktopNotification{Type: DesktopNotificationNone})
 		if f.apiData.MaxID == mastodon.ID("") {
 			item = items[len(items)-1].Raw().(*mastodon.Status)
 			f.apiData.MaxID = item.ID
@@ -510,7 +505,7 @@ func (f *Feed) normalOlderID(fn apiIDFunc, id mastodon.ID) {
 		item := items[len(items)-1].Raw().(*mastodon.Status)
 		f.apiData.MaxID = item.ID
 		f.items = append(f.items, items...)
-		f.Updated(DesktopNotification{Type: DesktopNotificationNone})
+		f.OnUpdate(f, DesktopNotification{Type: DesktopNotificationNone})
 	}
 	f.itemsMux.Unlock()
 	f.apiDataMux.Unlock()
@@ -524,7 +519,7 @@ func (f *Feed) normalEmpty(fn apiEmptyFunc) {
 	f.itemsMux.Lock()
 	if len(items) > 0 {
 		f.items = append(f.items, items...)
-		f.Updated(DesktopNotification{Type: DesktopNotificationNone})
+		f.OnUpdate(f, DesktopNotification{Type: DesktopNotificationNone})
 	}
 	f.itemsMux.Unlock()
 }
@@ -550,7 +545,7 @@ func (f *Feed) linkNewer(fn apiFunc) {
 	f.itemsMux.Lock()
 	if len(items) > 0 {
 		f.items = append(items, f.items...)
-		f.Updated(DesktopNotification{Type: DesktopNotificationNone})
+		f.OnUpdate(f, DesktopNotification{Type: DesktopNotificationNone})
 	}
 	f.itemsMux.Unlock()
 }
@@ -575,7 +570,7 @@ func (f *Feed) linkOlder(fn apiFunc) {
 	f.itemsMux.Lock()
 	if len(items) > 0 {
 		f.items = append(f.items, items...)
-		f.Updated(DesktopNotification{Type: DesktopNotificationNone})
+		f.OnUpdate(f, DesktopNotification{Type: DesktopNotificationNone})
 	}
 	f.itemsMux.Unlock()
 }
@@ -601,7 +596,7 @@ func (f *Feed) linkNewerID(fn apiIDFunc, id mastodon.ID) {
 	f.itemsMux.Lock()
 	if len(items) > 0 {
 		f.items = append(items, f.items...)
-		f.Updated(DesktopNotification{Type: DesktopNotificationNone})
+		f.OnUpdate(f, DesktopNotification{Type: DesktopNotificationNone})
 	}
 	f.itemsMux.Unlock()
 }
@@ -626,7 +621,7 @@ func (f *Feed) linkOlderID(fn apiIDFunc, id mastodon.ID) {
 	f.itemsMux.Lock()
 	if len(items) > 0 {
 		f.items = append(f.items, items...)
-		f.Updated(DesktopNotification{Type: DesktopNotificationNone})
+		f.OnUpdate(f, DesktopNotification{Type: DesktopNotificationNone})
 	}
 	f.itemsMux.Unlock()
 }
@@ -652,7 +647,7 @@ func (f *Feed) linkNewerIDdata(fn apiIDFuncData, id mastodon.ID, data interface{
 	f.itemsMux.Lock()
 	if len(items) > 0 {
 		f.items = append(items, f.items...)
-		f.Updated(DesktopNotification{Type: DesktopNotificationNone})
+		f.OnUpdate(f, DesktopNotification{Type: DesktopNotificationNone})
 	}
 	f.itemsMux.Unlock()
 }
@@ -677,7 +672,7 @@ func (f *Feed) linkOlderIDdata(fn apiIDFuncData, id mastodon.ID, data interface{
 	f.itemsMux.Lock()
 	if len(items) > 0 {
 		f.items = append(f.items, items...)
-		f.Updated(DesktopNotification{Type: DesktopNotificationNone})
+		f.OnUpdate(f, DesktopNotification{Type: DesktopNotificationNone})
 	}
 	f.itemsMux.Unlock()
 }
@@ -726,7 +721,7 @@ func be_HandleUpdatesAndDM(f *Feed, from phony.Actor, e mastodon.Event) {
 			}
 			if !found {
 				f.items = append([]api.Item{s}, f.items...)
-				f.Updated(DesktopNotification{
+				f.OnUpdate(f, DesktopNotification{
 					Type: DesktopNotificationMention,
 				})
 				f.apiData.MinID = t.Conversation.LastStatus.ID
@@ -749,7 +744,7 @@ func be_HandleUpdatesAndDM(f *Feed, from phony.Actor, e mastodon.Event) {
 			}
 			if !found {
 				f.items = append([]api.Item{s}, f.items...)
-				f.Updated(DesktopNotification{
+				f.OnUpdate(f, DesktopNotification{
 					Type: DesktopNotificationPost,
 				})
 				f.apiData.MinID = t.Status.ID
@@ -841,7 +836,7 @@ func handleNotifications(f *Feed, e mastodon.Event, mentions bool) {
 		default:
 			nft = DesktopNotificationNone
 		}
-		f.Updated(DesktopNotification{
+		f.OnUpdate(f, DesktopNotification{
 			Type: nft,
 			Data: data,
 		})
@@ -859,7 +854,6 @@ func newFeed(ac *api.AccountClient, ft config.FeedType, cnf *config.Config, hide
 		loadNewer:     func(*Feed) {},
 		loadOlder:     func(*Feed) {},
 		apiData:       &api.RequestData{},
-		Update:        make(chan DesktopNotification, 1),
 		loadingNewer:  &LoadingLock{},
 		loadingOlder:  &LoadingLock{},
 		hideBoosts:    hideBoosts,
