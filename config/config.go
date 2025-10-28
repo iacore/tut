@@ -532,9 +532,13 @@ type Input struct {
 	EditorExit InputAction
 }
 
-func parseColor(input string, def string, xrdb map[string]string) tcell.Color {
+func parseColor(input string, useDefault bool, dflt string, xrdb map[string]string) tcell.Color {
 	if input == "" {
-		return tcell.GetColor(def)
+		if useDefault {
+			return tcell.GetColor(dflt)
+		} else {
+			return tcell.ColorDefault
+		}
 	}
 
 	if strings.HasPrefix(input, "xrdb:") {
@@ -542,137 +546,141 @@ func parseColor(input string, def string, xrdb map[string]string) tcell.Color {
 		if c, ok := xrdb[key]; ok {
 			return tcell.GetColor(c)
 		} else {
-			return tcell.GetColor(def)
+			if useDefault {
+				return tcell.GetColor(dflt)
+			} else {
+				return tcell.ColorDefault
+			}
 		}
 	}
 	return tcell.GetColor(input)
 }
 
-func parseTheme(cfg StyleTOML, xrdbColors map[string]string) Style {
+func parseTheme(cfg StyleTOML, useDefault bool, xrdbColors map[string]string) Style {
 	var style Style
-	def := ConfigDefault.Style
-	s := NilDefaultString(cfg.Background, def.Background)
-	style.Background = parseColor(s, "#27822", xrdbColors)
+	dflt := ConfigDefault.Style
+	s := NilDefaultString(cfg.Background, dflt.Background)
+	style.Background = parseColor(s, useDefault, "#27822", xrdbColors)
 
-	s = NilDefaultString(cfg.Text, def.Text)
-	style.Text = parseColor(s, "#f8f8f2", xrdbColors)
+	s = NilDefaultString(cfg.Text, dflt.Text)
+	style.Text = parseColor(s, useDefault, "#f8f8f2", xrdbColors)
 
-	s = NilDefaultString(cfg.Subtle, def.Subtle)
-	style.Subtle = parseColor(s, "#808080", xrdbColors)
+	s = NilDefaultString(cfg.Subtle, dflt.Subtle)
+	style.Subtle = parseColor(s, useDefault, "#808080", xrdbColors)
 
-	s = NilDefaultString(cfg.WarningText, def.WarningText)
-	style.WarningText = parseColor(s, "#f92672", xrdbColors)
+	s = NilDefaultString(cfg.WarningText, dflt.WarningText)
+	style.WarningText = parseColor(s, useDefault, "#f92672", xrdbColors)
 
-	s = NilDefaultString(cfg.TextSpecial1, def.TextSpecial1)
-	style.TextSpecial1 = parseColor(s, "#ae81ff", xrdbColors)
+	s = NilDefaultString(cfg.TextSpecial1, dflt.TextSpecial1)
+	style.TextSpecial1 = parseColor(s, useDefault, "#ae81ff", xrdbColors)
 
-	s = NilDefaultString(cfg.TextSpecial2, def.TextSpecial2)
-	style.TextSpecial2 = parseColor(s, "#a6e22e", xrdbColors)
+	s = NilDefaultString(cfg.TextSpecial2, dflt.TextSpecial2)
+	style.TextSpecial2 = parseColor(s, useDefault, "#a6e22e", xrdbColors)
 
-	s = NilDefaultString(cfg.TopBarBackground, def.TopBarBackground)
-	style.TopBarBackground = parseColor(s, "#f92672", xrdbColors)
+	s = NilDefaultString(cfg.TopBarBackground, dflt.TopBarBackground)
+	style.TopBarBackground = parseColor(s, useDefault, "#f92672", xrdbColors)
 
-	s = NilDefaultString(cfg.TopBarText, def.TopBarText)
-	style.TopBarText = parseColor(s, "#f8f8f2", xrdbColors)
+	s = NilDefaultString(cfg.TopBarText, dflt.TopBarText)
+	style.TopBarText = parseColor(s, useDefault, "#f8f8f2", xrdbColors)
 
-	s = NilDefaultString(cfg.StatusBarBackground, def.StatusBarBackground)
-	style.StatusBarBackground = parseColor(s, "#f92672", xrdbColors)
+	s = NilDefaultString(cfg.StatusBarBackground, dflt.StatusBarBackground)
+	style.StatusBarBackground = parseColor(s, useDefault, "#f92672", xrdbColors)
 
-	s = NilDefaultString(cfg.StatusBarText, def.StatusBarText)
-	style.StatusBarText = parseColor(s, "#f8f8f3", xrdbColors)
+	s = NilDefaultString(cfg.StatusBarText, dflt.StatusBarText)
+	style.StatusBarText = parseColor(s, useDefault, "#f8f8f3", xrdbColors)
 
-	s = NilDefaultString(cfg.StatusBarViewBackground, def.StatusBarViewBackground)
-	style.StatusBarViewBackground = parseColor(s, "#ae81ff", xrdbColors)
+	s = NilDefaultString(cfg.StatusBarViewBackground, dflt.StatusBarViewBackground)
+	style.StatusBarViewBackground = parseColor(s, useDefault, "#ae81ff", xrdbColors)
 
-	s = NilDefaultString(cfg.StatusBarViewText, def.StatusBarViewText)
-	style.StatusBarViewText = parseColor(s, "#f8f8f2", xrdbColors)
+	s = NilDefaultString(cfg.StatusBarViewText, dflt.StatusBarViewText)
+	style.StatusBarViewText = parseColor(s, useDefault, "#f8f8f2", xrdbColors)
 
-	s = NilDefaultString(cfg.ListSelectedBackground, def.ListSelectedBackground)
-	style.ListSelectedBackground = parseColor(s, "#f92672", xrdbColors)
+	s = NilDefaultString(cfg.ListSelectedBackground, dflt.ListSelectedBackground)
+	style.ListSelectedBackground = parseColor(s, useDefault, "#f92672", xrdbColors)
 
-	s = NilDefaultString(cfg.ListSelectedText, def.ListSelectedText)
-	style.ListSelectedText = parseColor(s, "#f8f8f2", xrdbColors)
+	s = NilDefaultString(cfg.ListSelectedText, dflt.ListSelectedText)
+	style.ListSelectedText = parseColor(s, useDefault, "#f8f8f2", xrdbColors)
 
 	s = NilDefaultString(cfg.ListSelectedInactiveBackground, sp(""))
 	if len(s) > 0 {
-		style.ListSelectedInactiveBackground = parseColor(s, "#ae81ff", xrdbColors)
+		style.ListSelectedInactiveBackground = parseColor(s, useDefault, "#ae81ff", xrdbColors)
 	} else {
 		style.ListSelectedInactiveBackground = style.StatusBarViewBackground
 	}
-	s = NilDefaultString(cfg.ListSelectedInactiveText, def.ListSelectedInactiveText)
+	s = NilDefaultString(cfg.ListSelectedInactiveText, dflt.ListSelectedInactiveText)
 	if len(s) > 0 {
-		style.ListSelectedInactiveText = parseColor(s, "#f8f8f2", xrdbColors)
+		style.ListSelectedInactiveText = parseColor(s, useDefault, "#f8f8f2", xrdbColors)
 	} else {
 		style.ListSelectedInactiveText = style.StatusBarViewText
 	}
 
 	s = NilDefaultString(cfg.ControlsText, sp(""))
 	if len(s) > 0 {
-		style.ControlsText = parseColor(s, "#f8f8f2", xrdbColors)
+		style.ControlsText = parseColor(s, useDefault, "#f8f8f2", xrdbColors)
 	} else {
 		style.ControlsText = style.Text
 	}
 	s = NilDefaultString(cfg.ControlsHighlight, sp(""))
 	if len(s) > 0 {
-		style.ControlsHighlight = parseColor(s, "#a6e22e", xrdbColors)
+		style.ControlsHighlight = parseColor(s, useDefault, "#a6e22e", xrdbColors)
 	} else {
 		style.ControlsHighlight = style.TextSpecial2
 	}
 
 	s = NilDefaultString(cfg.AutocompleteBackground, sp(""))
 	if len(s) > 0 {
-		style.AutocompleteBackground = parseColor(s, "#272822", xrdbColors)
+		style.AutocompleteBackground = parseColor(s, useDefault, "#272822", xrdbColors)
 	} else {
 		style.AutocompleteBackground = style.Background
 	}
 	s = NilDefaultString(cfg.AutocompleteText, sp(""))
 	if len(s) > 0 {
-		style.AutocompleteText = parseColor(s, "#f8f8f2", xrdbColors)
+		style.AutocompleteText = parseColor(s, useDefault, "#f8f8f2", xrdbColors)
 	} else {
 		style.AutocompleteText = style.Text
 	}
 	s = NilDefaultString(cfg.AutocompleteSelectedBackground, sp(""))
 	if len(s) > 0 {
-		style.AutocompleteSelectedBackground = parseColor(s, "#ae81ff", xrdbColors)
+		style.AutocompleteSelectedBackground = parseColor(s, useDefault, "#ae81ff", xrdbColors)
 	} else {
 		style.AutocompleteSelectedBackground = style.StatusBarViewBackground
 	}
 	s = NilDefaultString(cfg.AutocompleteSelectedText, sp(""))
 	if len(s) > 0 {
-		style.AutocompleteSelectedText = parseColor(s, "#f8f8f2", xrdbColors)
+		style.AutocompleteSelectedText = parseColor(s, useDefault, "#f8f8f2", xrdbColors)
 	} else {
 		style.AutocompleteSelectedText = style.StatusBarViewText
 	}
 
 	s = NilDefaultString(cfg.ButtonColorOne, sp(""))
 	if len(s) > 0 {
-		style.ButtonColorOne = parseColor(s, "#ae81ff", xrdbColors)
+		style.ButtonColorOne = parseColor(s, useDefault, "#ae81ff", xrdbColors)
 	} else {
 		style.ButtonColorOne = style.StatusBarViewBackground
 	}
 	s = NilDefaultString(cfg.ButtonColorTwo, sp(""))
 	if len(s) > 0 {
-		style.ButtonColorTwo = parseColor(s, "#272822", xrdbColors)
+		style.ButtonColorTwo = parseColor(s, useDefault, "#272822", xrdbColors)
 	} else {
 		style.ButtonColorTwo = style.Background
 	}
 
 	s = NilDefaultString(cfg.TimelineNameBackground, sp(""))
 	if len(s) > 0 {
-		style.TimelineNameBackground = parseColor(s, "#272822", xrdbColors)
+		style.TimelineNameBackground = parseColor(s, useDefault, "#272822", xrdbColors)
 	} else {
 		style.TimelineNameBackground = style.Background
 	}
 	s = NilDefaultString(cfg.TimelineNameText, sp(""))
 	if len(s) > 0 {
-		style.TimelineNameText = parseColor(s, "#808080", xrdbColors)
+		style.TimelineNameText = parseColor(s, useDefault, "#808080", xrdbColors)
 	} else {
 		style.TimelineNameText = style.Subtle
 	}
 
 	s = NilDefaultString(cfg.CommandText, sp(""))
 	if len(s) > 0 {
-		style.CommandText = parseColor(s, "#f8f8f2", xrdbColors)
+		style.CommandText = parseColor(s, useDefault, "#f8f8f2", xrdbColors)
 	} else {
 		style.CommandText = style.StatusBarText
 	}
@@ -682,8 +690,7 @@ func parseTheme(cfg StyleTOML, xrdbColors map[string]string) Style {
 func parseStyle(cfg StyleTOML, cnfPath string, cnfDir string) Style {
 	var xrdbColors map[string]string
 	xrdbMap, _ := GetXrdbColors()
-	def := ConfigDefault.Style
-	prefix := NilDefaultString(cfg.XrdbPrefix, def.XrdbPrefix)
+	prefix := NilDefaultString(cfg.XrdbPrefix, ConfigDefault.Style.XrdbPrefix)
 	if prefix == "" {
 		prefix = "guess"
 	}
@@ -703,7 +710,7 @@ func parseStyle(cfg StyleTOML, cnfPath string, cnfDir string) Style {
 	}
 
 	var style Style
-	theme := NilDefaultString(cfg.Theme, def.Theme)
+	theme := NilDefaultString(cfg.Theme, ConfigDefault.Style.Theme)
 	if theme != "none" && theme != "" {
 		bundled, local, err := getThemes(cnfPath, cnfDir)
 		if err != nil {
@@ -733,10 +740,10 @@ func parseStyle(cfg StyleTOML, cnfPath string, cnfDir string) Style {
 		if err != nil {
 			log.Fatalf("Couldn't load theme. Error: %s\n", err)
 		}
-		style = parseTheme(tcfg, xrdbColors)
+		style = parseTheme(tcfg, true, xrdbColors)
 
 	} else {
-		style = parseTheme(cfg, xrdbColors)
+		style = parseTheme(cfg, false, xrdbColors)
 	}
 
 	return style
