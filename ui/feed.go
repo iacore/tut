@@ -141,11 +141,12 @@ func NewThreadFeed(tv *TutView, item api.Item, tl *config.Timeline) *Feed {
 	status := util.StatusOrReblog(item.Raw().(*mastodon.Status))
 	fd := &Feed{
 		tutView:  tv,
-		List:     NewFeedList(tv.tut, f.StickyCount()),
 		Content:  NewFeedContent(tv.tut),
 		Timeline: tl,
 	}
-	f := feed.NewThread(tv.tut.Client, fd.CreateUpdateCallback(), tv.tut.Config, status)
+	f := feed.NewThread(tv.tut.Client, tv.tut.Config, fd.CreateUpdateCallback(), status)
+	fd.Data = f
+	fd.List = NewFeedList(tv.tut, f.StickyCount())
 	f.LoadNewer()
 	for i, s := range f.List() {
 		main, symbol := DrawListItem(tv.tut.Config, s)
@@ -163,11 +164,12 @@ func NewHistoryFeed(tv *TutView, item api.Item, tl *config.Timeline) *Feed {
 	status := util.StatusOrReblog(item.Raw().(*mastodon.Status))
 	fd := &Feed{
 		tutView:  tv,
-		List:     NewFeedList(tv.tut, f.StickyCount()),
 		Content:  NewFeedContent(tv.tut),
 		Timeline: tl,
 	}
-	f := feed.NewHistory(tv.tut.Client, fd.CreateUpdateCallback(), tv.tut.Config, status)
+	f := feed.NewHistory(tv.tut.Client, tv.tut.Config, fd.CreateUpdateCallback(), status)
+	fd.Data = f
+	fd.List = NewFeedList(tv.tut, f.StickyCount())
 	f.LoadNewer()
 	for _, s := range f.List() {
 		main, symbol := DrawListItem(tv.tut.Config, s)
@@ -182,11 +184,12 @@ func NewHistoryFeed(tv *TutView, item api.Item, tl *config.Timeline) *Feed {
 func NewConversationsFeed(tv *TutView, tl *config.Timeline) *Feed {
 	fd := &Feed{
 		tutView:  tv,
-		List:     NewFeedList(tv.tut, f.StickyCount()),
 		Content:  NewFeedContent(tv.tut),
 		Timeline: tl,
 	}
-	f := feed.NewConversations(tv.tut.Client, tv.fd.CreateUpdateCallback(), tut.Config, false, false)
+	f := feed.NewConversations(tv.tut.Client, tv.tut.Config, fd.CreateUpdateCallback(), false, false)
+	fd.Data = f
+	fd.List = NewFeedList(tv.tut, f.StickyCount())
 	f.LoadNewer()
 
 	return fd
@@ -199,11 +202,12 @@ func NewUserFeed(tv *TutView, item api.Item, tl *config.Timeline) *Feed {
 	u := item.Raw().(*api.User)
 	fd := &Feed{
 		tutView:  tv,
-		List:     NewFeedList(tv.tut, f.StickyCount()),
 		Content:  NewFeedContent(tv.tut),
 		Timeline: tl,
 	}
-	f := feed.NewUserProfile(tv.tut.Client, fd.CreateUpdateCallback(), tv.tut.Config, u)
+	f := feed.NewUserProfile(tv.tut.Client, tv.tut.Config, fd.CreateUpdateCallback(), u)
+	fd.Data = f
+	fd.List = NewFeedList(tv.tut, f.StickyCount())
 	f.LoadNewer()
 
 	return fd
@@ -212,11 +216,12 @@ func NewUserFeed(tv *TutView, item api.Item, tl *config.Timeline) *Feed {
 func NewUserSearchFeed(tv *TutView, tl *config.Timeline) *Feed {
 	fd := &Feed{
 		tutView:  tv,
-		List:     NewFeedList(tv.tut, f.StickyCount()),
 		Content:  NewFeedContent(tv.tut),
 		Timeline: tl,
 	}
-	f := feed.NewUserSearch(tv.tut.Client, tv.fd.CreateUpdateCallback(), tut.Config, tl.Subaction)
+	f := feed.NewUserSearch(tv.tut.Client, tv.tut.Config, fd.CreateUpdateCallback(), tl.Subaction)
+	fd.Data = f
+	fd.List = NewFeedList(tv.tut, f.StickyCount())
 	f.LoadNewer()
 	for _, s := range f.List() {
 		main, symbol := DrawListItem(tv.tut.Config, s)
@@ -230,11 +235,12 @@ func NewUserSearchFeed(tv *TutView, tl *config.Timeline) *Feed {
 func NewTagFeed(tv *TutView, tl *config.Timeline) *Feed {
 	fd := &Feed{
 		tutView:  tv,
-		List:     NewFeedList(tv.tut, f.StickyCount()),
 		Content:  NewFeedContent(tv.tut),
 		Timeline: tl,
 	}
-	f := feed.NewTag(tv.tut.Client, tv.tut.Config, tl.Subaction, fd.CreateUpdateCallback(), tl.HideBoosts, tl.HideReplies)
+	f := feed.NewTag(tv.tut.Client, tv.tut.Config, fd.CreateUpdateCallback(), tl.Subaction, tl.HideBoosts, tl.HideReplies)
+	fd.Data = f
+	fd.List = NewFeedList(tv.tut, f.StickyCount())
 	f.LoadNewer()
 
 	return fd
@@ -243,11 +249,12 @@ func NewTagFeed(tv *TutView, tl *config.Timeline) *Feed {
 func NewTagsFeed(tv *TutView, tl *config.Timeline) *Feed {
 	fd := &Feed{
 		tutView:  tv,
-		List:     NewFeedList(tv.tut, f.StickyCount()),
 		Content:  NewFeedContent(tv.tut),
 		Timeline: tl,
 	}
-	f := feed.NewTags(tv.tut.fd.CreateUpdateCallback(), Client, tv.tut.Config)
+	f := feed.NewTags(tv.tut.Client, tv.tut.Config, fd.CreateUpdateCallback())
+	fd.Data = f
+	fd.List = NewFeedList(tv.tut, f.StickyCount())
 	f.LoadNewer()
 
 	return fd
@@ -256,11 +263,12 @@ func NewTagsFeed(tv *TutView, tl *config.Timeline) *Feed {
 func NewListsFeed(tv *TutView, tl *config.Timeline) *Feed {
 	fd := &Feed{
 		tutView:  tv,
-		List:     NewFeedList(tv.tut, f.StickyCount()),
 		Content:  NewFeedContent(tv.tut),
 		Timeline: tl,
 	}
-	f := feed.NewListList(tv.tut.fd.CreateUpdateCallback(), Client, tv.tut.Config)
+	f := feed.NewListList(tv.tut.Client, tv.tut.Config, fd.CreateUpdateCallback())
+	fd.Data = f
+	fd.List = NewFeedList(tv.tut, f.StickyCount())
 	f.LoadNewer()
 
 	return fd
@@ -269,11 +277,12 @@ func NewListsFeed(tv *TutView, tl *config.Timeline) *Feed {
 func NewListFeed(tv *TutView, l *mastodon.List, tl *config.Timeline) *Feed {
 	fd := &Feed{
 		tutView:  tv,
-		List:     NewFeedList(tv.tut, f.StickyCount()),
 		Content:  NewFeedContent(tv.tut),
 		Timeline: tl,
 	}
-	f := feed.NewList(tv.tut.Client, tv.tut.Config, l, fd.CreateUpdateCallback(), tl.HideBoosts, tl.HideReplies)
+	f := feed.NewList(tv.tut.Client, tv.tut.Config, fd.CreateUpdateCallback(), l, tl.HideBoosts, tl.HideReplies)
+	fd.Data = f
+	fd.List = NewFeedList(tv.tut, f.StickyCount())
 	f.LoadNewer()
 
 	return fd
@@ -282,11 +291,12 @@ func NewListFeed(tv *TutView, l *mastodon.List, tl *config.Timeline) *Feed {
 func NewUsersInListFeed(tv *TutView, l *mastodon.List, tl *config.Timeline) *Feed {
 	fd := &Feed{
 		tutView:  tv,
-		List:     NewFeedList(tv.tut, f.StickyCount()),
 		Content:  NewFeedContent(tv.tut),
 		Timeline: tl,
 	}
-	f := feed.NewUsersInList(tv.tut.Client, fd.CreateUpdateCallback(), tv.tut.Config, l)
+	f := feed.NewUsersInList(tv.tut.Client, tv.tut.Config, fd.CreateUpdateCallback(), l)
+	fd.Data = f
+	fd.List = NewFeedList(tv.tut, f.StickyCount())
 	f.LoadNewer()
 
 	return fd
@@ -295,11 +305,12 @@ func NewUsersInListFeed(tv *TutView, l *mastodon.List, tl *config.Timeline) *Fee
 func NewUsersAddListFeed(tv *TutView, l *mastodon.List, tl *config.Timeline) *Feed {
 	fd := &Feed{
 		tutView:  tv,
-		List:     NewFeedList(tv.tut, f.StickyCount()),
 		Content:  NewFeedContent(tv.tut),
 		Timeline: tl,
 	}
-	f := feed.NewUsersAddList(tv.tut.Client, fd.CreateUpdateCallback(), tv.tut.Config, l)
+	f := feed.NewUsersAddList(tv.tut.Client, tv.tut.Config, fd.CreateUpdateCallback(), l)
+	fd.Data = f
+	fd.List = NewFeedList(tv.tut, f.StickyCount())
 	f.LoadNewer()
 
 	return fd
@@ -308,11 +319,12 @@ func NewUsersAddListFeed(tv *TutView, l *mastodon.List, tl *config.Timeline) *Fe
 func NewFavoritedFeed(tv *TutView, tl *config.Timeline) *Feed {
 	fd := &Feed{
 		tutView:  tv,
-		List:     NewFeedList(tv.tut, f.StickyCount()),
 		Content:  NewFeedContent(tv.tut),
 		Timeline: tl,
 	}
-	f := feed.NewFavorites(tv.tut.fd.CreateUpdateCallback(), Client, tv.tut.Config)
+	f := feed.NewFavorites(tv.tut.Client, tv.tut.Config, fd.CreateUpdateCallback())
+	fd.Data = f
+	fd.List = NewFeedList(tv.tut, f.StickyCount())
 	f.LoadNewer()
 
 	return fd
@@ -321,11 +333,12 @@ func NewFavoritedFeed(tv *TutView, tl *config.Timeline) *Feed {
 func NewBookmarksFeed(tv *TutView, tl *config.Timeline) *Feed {
 	fd := &Feed{
 		tutView:  tv,
-		List:     NewFeedList(tv.tut, f.StickyCount()),
 		Content:  NewFeedContent(tv.tut),
 		Timeline: tl,
 	}
-	f := feed.NewBookmarks(tv.tut.fd.CreateUpdateCallback(), Client, tv.tut.Config)
+	f := feed.NewBookmarks(tv.tut.Client, tv.tut.Config, fd.CreateUpdateCallback())
+	fd.Data = f
+	fd.List = NewFeedList(tv.tut, f.StickyCount())
 	f.LoadNewer()
 
 	return fd
@@ -334,11 +347,12 @@ func NewBookmarksFeed(tv *TutView, tl *config.Timeline) *Feed {
 func NewFavoritesStatus(tv *TutView, id mastodon.ID, tl *config.Timeline) *Feed {
 	fd := &Feed{
 		tutView:  tv,
-		List:     NewFeedList(tv.tut, f.StickyCount()),
 		Content:  NewFeedContent(tv.tut),
 		Timeline: tl,
 	}
-	f := feed.NewFavoritesStatus(tv.tut.Client, fd.CreateUpdateCallback(), tv.tut.Config, id)
+	f := feed.NewFavoritesStatus(tv.tut.Client, tv.tut.Config, fd.CreateUpdateCallback(), id)
+	fd.Data = f
+	fd.List = NewFeedList(tv.tut, f.StickyCount())
 	f.LoadNewer()
 
 	return fd
@@ -347,11 +361,12 @@ func NewFavoritesStatus(tv *TutView, id mastodon.ID, tl *config.Timeline) *Feed 
 func NewBoosts(tv *TutView, id mastodon.ID, tl *config.Timeline) *Feed {
 	fd := &Feed{
 		tutView:  tv,
-		List:     NewFeedList(tv.tut, f.StickyCount()),
 		Content:  NewFeedContent(tv.tut),
 		Timeline: tl,
 	}
-	f := feed.NewBoosts(tv.tut.Client, fd.CreateUpdateCallback(), tv.tut.Config, id)
+	f := feed.NewBoosts(tv.tut.Client, tv.tut.Config, fd.CreateUpdateCallback(), id)
+	fd.Data = f
+	fd.List = NewFeedList(tv.tut, f.StickyCount())
 	f.LoadNewer()
 
 	return fd
@@ -360,11 +375,12 @@ func NewBoosts(tv *TutView, id mastodon.ID, tl *config.Timeline) *Feed {
 func NewFollowers(tv *TutView, id mastodon.ID, tl *config.Timeline) *Feed {
 	fd := &Feed{
 		tutView:  tv,
-		List:     NewFeedList(tv.tut, f.StickyCount()),
 		Content:  NewFeedContent(tv.tut),
 		Timeline: tl,
 	}
-	f := feed.NewFollowers(tv.tut.Client, fd.CreateUpdateCallback(), tv.tut.Config, id)
+	f := feed.NewFollowers(tv.tut.Client, tv.tut.Config, fd.CreateUpdateCallback(), id)
+	fd.Data = f
+	fd.List = NewFeedList(tv.tut, f.StickyCount())
 	f.LoadNewer()
 
 	return fd
@@ -373,11 +389,12 @@ func NewFollowers(tv *TutView, id mastodon.ID, tl *config.Timeline) *Feed {
 func NewFollowing(tv *TutView, id mastodon.ID, tl *config.Timeline) *Feed {
 	fd := &Feed{
 		tutView:  tv,
-		List:     NewFeedList(tv.tut, f.StickyCount()),
 		Content:  NewFeedContent(tv.tut),
 		Timeline: tl,
 	}
-	f := feed.NewFollowing(tv.tut.Client, fd.CreateUpdateCallback(), tv.tut.Config, id)
+	f := feed.NewFollowing(tv.tut.Client, tv.tut.Config, fd.CreateUpdateCallback(), id)
+	fd.Data = f
+	fd.List = NewFeedList(tv.tut, f.StickyCount())
 	f.LoadNewer()
 
 	return fd
@@ -386,11 +403,12 @@ func NewFollowing(tv *TutView, id mastodon.ID, tl *config.Timeline) *Feed {
 func NewBlocking(tv *TutView, tl *config.Timeline) *Feed {
 	fd := &Feed{
 		tutView:  tv,
-		List:     NewFeedList(tv.tut, f.StickyCount()),
 		Content:  NewFeedContent(tv.tut),
 		Timeline: tl,
 	}
-	f := feed.NewBlocking(tv.tut.fd.CreateUpdateCallback(), Client, tv.tut.Config)
+	f := feed.NewBlocking(tv.tut.Client, tv.tut.Config, fd.CreateUpdateCallback())
+	fd.Data = f
+	fd.List = NewFeedList(tv.tut, f.StickyCount())
 	f.LoadNewer()
 
 	return fd
@@ -399,11 +417,12 @@ func NewBlocking(tv *TutView, tl *config.Timeline) *Feed {
 func NewMuting(tv *TutView, tl *config.Timeline) *Feed {
 	fd := &Feed{
 		tutView:  tv,
-		List:     NewFeedList(tv.tut, f.StickyCount()),
 		Content:  NewFeedContent(tv.tut),
 		Timeline: tl,
 	}
-	f := feed.NewMuting(tv.tut.fd.CreateUpdateCallback(), Client, tv.tut.Config)
+	f := feed.NewMuting(tv.tut.Client, tv.tut.Config, fd.CreateUpdateCallback())
+	fd.Data = f
+	fd.List = NewFeedList(tv.tut, f.StickyCount())
 	f.LoadNewer()
 
 	return fd
@@ -412,11 +431,12 @@ func NewMuting(tv *TutView, tl *config.Timeline) *Feed {
 func NewFollowRequests(tv *TutView, tl *config.Timeline) *Feed {
 	fd := &Feed{
 		tutView:  tv,
-		List:     NewFeedList(tv.tut, f.StickyCount()),
 		Content:  NewFeedContent(tv.tut),
 		Timeline: tl,
 	}
-	f := feed.NewFollowRequests(tv.tut.fd.CreateUpdateCallback(), Client, tv.tut.Config)
+	f := feed.NewFollowRequests(tv.tut.Client, tv.tut.Config, fd.CreateUpdateCallback())
+	fd.Data = f
+	fd.List = NewFeedList(tv.tut, f.StickyCount())
 	f.LoadNewer()
 
 	return fd
