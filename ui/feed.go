@@ -90,7 +90,7 @@ func (f *Feed) DrawContent() {
 func (ui *Feed) CreateUpdateCallback() feed.FeedUpdateCallBack {
 	return func(logical *feed.Feed, nft feed.DesktopNotification) {
 		feed.SendDesktopNotification(ui.tutView.tut.Config.NotificationConfig, nft)
-		ui.tutView.tut.App.QueueUpdateDraw(func() {
+		go ui.tutView.tut.App.QueueUpdateDraw(func() {
 			lLen := ui.List.GetItemCount()
 			curr := ui.List.GetCurrentID()
 			ui.List.Clear()

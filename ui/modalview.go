@@ -43,7 +43,7 @@ func (mv *ModalView) Be_Done(from phony.Actor, res bool) {
 		} else {
 			action.fnNo()
 		}
-		mv.tutView.tut.App.QueueUpdateDraw(func() {
+		go mv.tutView.tut.App.QueueUpdateDraw(func() {
 			mv.tutView.PrevFocus()
 		})
 	})
@@ -61,9 +61,9 @@ func (mv *ModalView) Be_OpenConfirm(from phony.Actor, text string, fn func()) {
 func (mv *ModalView) Be_Open(from phony.Actor, text string, fnYes func(), fnNo func()) {
 	mv.Act(from, func() {
 		mv.onceAction = &ModelViewOnceAction{fnYes, fnNo}
-		mv.View.SetFocus(0)
-		mv.View.SetText(text)
-		mv.tutView.tut.App.QueueUpdateDraw(func() {
+		go mv.tutView.tut.App.QueueUpdateDraw(func() {
+			mv.View.SetFocus(0)
+			mv.View.SetText(text)
 			mv.tutView.SetPage(ModalFocus)
 		})
 	})

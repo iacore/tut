@@ -28,7 +28,7 @@ func NewMainView(tv *TutView) *MainView {
 func (mv *MainView) Be_ForceUpdate(from phony.Actor) {
 	mv.Act(from, func() {
 		tv := mv.tv
-		tv.tut.App.QueueUpdateDraw(func() {
+		go tv.tut.App.QueueUpdateDraw(func() {
 			tv.MainView.View = mv.mainViewUI(tv)
 			tv.ShouldSync()
 		})
