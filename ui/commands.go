@@ -123,7 +123,7 @@ func (tv *TutView) NotificationsCommand() {
 
 func (tv *TutView) MentionsCommand() {
 	tv.Timeline.AddFeed(
-		NewNotificatioMentionsFeed(tv, config.NewTimeline(config.Timeline{
+		NewMentionFeed(tv, config.NewTimeline(config.Timeline{
 			FeedType: config.Mentions,
 		})),
 		tv.tut.Config.General.CommandsInNewPane)

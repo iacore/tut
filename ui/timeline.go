@@ -55,7 +55,7 @@ func CreateFeed(tv *TutView, f *config.Timeline) *Feed {
 	case config.Notifications:
 		nf = NewNotificationFeed(tv, f)
 	case config.Mentions:
-		nf = NewNotificatioMentionsFeed(tv, f)
+		nf = NewMentionFeed(tv, f)
 	case config.Lists:
 		nf = NewListsFeed(tv, f)
 	case config.Tag:
